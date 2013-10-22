@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		LinearLayout nlTwitter = (LinearLayout) findViewById(R.id.newLegacyIncTwitter);
+		ImageView nlTwitter = (ImageView) findViewById(R.id.twitter);
 		nlTwitter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
