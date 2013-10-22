@@ -12,15 +12,19 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private static final String TAG = "nlAPP";
+	private static final String TAG = "newLegacyInc";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		TextView tv = (TextView) findViewById(R.id.textView1);
+		tv.setSelected(true); // needed for marquee to work
 
 		final Context c = this;
 
