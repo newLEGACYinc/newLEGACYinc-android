@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -65,6 +66,22 @@ public class MainActivity extends Activity {
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
 						.parse("http://newlegacyinc.tumblr.com/"));
 				startActivity(browserIntent);
+			}
+		});
+
+		LinearLayout nlTwitter = (LinearLayout) findViewById(R.id.newLegacyIncTwitter);
+		nlTwitter.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// http://stackoverflow.com/a/18695465/1222411
+				try {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri
+							.parse("twitter://user?screen_name="
+									+ "newLegacyInc")));
+				} catch (Exception e) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri
+							.parse("https://twitter.com/" + "newLegacyInc")));
+				}
 			}
 		});
 	}
