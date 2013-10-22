@@ -2,6 +2,7 @@ package com.scowalt.newlegacyincapp;
 
 import com.google.android.youtube.player.YouTubeIntents;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -17,14 +18,25 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		final Context c = this;
+
 		ImageView youtube = (ImageView) findViewById(R.id.youtube);
-		youtube.setOnClickListener(new OnClickListener(){
+		youtube.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = YouTubeIntents.createUserIntent(c, "newLEGACYinc");
+				Intent intent = YouTubeIntents.createUserIntent(c,
+						"newLEGACYinc");
 				startActivity(intent);
+			}
+		});
+
+		ImageView twitch = (ImageView) findViewById(R.id.twitch);
+		twitch.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.twitch.tv/newlegacyinc/popout/"));
+				startActivity(browserIntent);
 			}
 		});
 	}
