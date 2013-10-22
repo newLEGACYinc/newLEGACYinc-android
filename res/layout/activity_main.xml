@@ -55,7 +55,7 @@
                 android:src="@drawable/facebook" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/tumblr"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

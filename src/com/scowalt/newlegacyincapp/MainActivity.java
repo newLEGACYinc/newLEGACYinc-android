@@ -15,8 +15,8 @@ import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
-private static final String TAG = "nlAPP";
-	
+	private static final String TAG = "nlAPP";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +51,16 @@ private static final String TAG = "nlAPP";
 				Intent facebookIntent = getOpenFacebookIntent(c);
 				Log.v(TAG, "Got facebook intent");
 				startActivity(facebookIntent);
+			}
+		});
+
+		ImageView tumblr = (ImageView) findViewById(R.id.tumblr);
+		tumblr.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://newlegacyinc.tumblr.com/"));
+				startActivity(browserIntent);
 			}
 		});
 	}
