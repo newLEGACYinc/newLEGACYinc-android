@@ -12,8 +12,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -23,9 +21,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		TextView tv = (TextView) findViewById(R.id.textView1);
-		tv.setSelected(true); // needed for marquee to work
 
 		final Context c = this;
 
