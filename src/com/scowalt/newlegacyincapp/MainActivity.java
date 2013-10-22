@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
+private static final String TAG = "nlAPP";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +42,35 @@ public class MainActivity extends Activity {
 				startActivity(browserIntent);
 			}
 		});
+
+		ImageView facebook = (ImageView) findViewById(R.id.facebook);
+		facebook.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.v(TAG, "Facebook has been clicked");
+				Intent facebookIntent = getOpenFacebookIntent(c);
+				Log.v(TAG, "Got facebook intent");
+				startActivity(facebookIntent);
+			}
+		});
+	}
+
+	/**
+	 * http://stackoverflow.com/a/10213314/1222411
+	 * 
+	 * @param context
+	 * @return
+	 */
+	private static Intent getOpenFacebookIntent(Context context) {
+		try {
+			context.getPackageManager()
+					.getPackageInfo("com.facebook.katana", 0);
+			return new Intent(Intent.ACTION_VIEW,
+					Uri.parse("fb://profile/100002106849705"));
+		} catch (Exception e) {
+			return new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://www.facebook.com/newlegacyinc"));
+		}
 	}
 
 	@Override
