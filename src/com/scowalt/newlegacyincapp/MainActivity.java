@@ -127,36 +127,44 @@ public class MainActivity extends Activity {
 				final JSONObject stream = twitchStatus();
 
 				if (!(stream == null)) {
-					String str = null;
-					try {
-						str = stream.get("game").toString();
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					final String game = str;
 					MainActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							final LinearLayout all = (LinearLayout) findViewById(R.id.all);
-							final TextView tv = new TextView(MainActivity.this);
-							LayoutParams params = new LinearLayout.LayoutParams(
-									LinearLayout.LayoutParams.MATCH_PARENT,
-									LinearLayout.LayoutParams.MATCH_PARENT, 3);
-							tv.setLayoutParams(params);
-							tv.setGravity(Gravity.CENTER);
-							tv.setText("newLEGACYInc is live! Playing " + game);
-							tv.setSingleLine();
-							tv.setTextSize(20);
-							tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-							tv.setMarqueeRepeatLimit(-1);
-							tv.setSelected(true);
-							all.addView(tv, 1);
+							drawTwitchStatusText(stream);
 						}
 					});
 				}
 			}
 		}).start();
+	}
+
+	/**
+	 * NOTE: Only run in UI thread
+	 * 
+	 * @param stream
+	 */
+	private void drawTwitchStatusText(final JSONObject stream) {
+		String game = "";
+		try {
+			game = stream.get("game").toString();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		final LinearLayout all = (LinearLayout) findViewById(R.id.all);
+		final TextView tv = new TextView(MainActivity.this);
+		LayoutParams params = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT, 3);
+		tv.setLayoutParams(params);
+		tv.setGravity(Gravity.CENTER);
+		tv.setText("newLEGACYInc is live! Playing " + game);
+		tv.setSingleLine();
+		tv.setTextSize(20);
+		tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+		tv.setMarqueeRepeatLimit(-1);
+		tv.setSelected(true);
+		all.addView(tv, 1);
 	}
 
 	/**
