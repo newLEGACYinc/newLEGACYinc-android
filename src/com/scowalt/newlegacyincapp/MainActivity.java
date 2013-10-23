@@ -38,21 +38,14 @@ public class MainActivity extends Activity {
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
 	private static final String TWITCH_USERNAME = "newlegacyinc";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
+	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		setupYoutubeButton(this);
-
-		setupTwitchButton();
-
-		setupFacebookButton(this);
-
-		setupTumblrButton();
-
-		setupTwitterButton();
+		setupSocialMediaButtons();
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -116,6 +109,30 @@ public class MainActivity extends Activity {
 		}).start();
 	}
 
+	private void setupSocialMediaButtons() {
+		setupYoutubeButton(this);
+
+		setupTwitchButton();
+
+		setupFacebookButton(this);
+
+		setupTumblrButton();
+
+		setupTwitterButton();
+		
+		setupSteamButton();
+	}
+
+	private void setupSteamButton(){
+		ImageView steam = (ImageView) findViewById(R.id.steam);
+		steam.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(STEAM_GROUP_URL)));
+			}
+		});
+	}
+	
 	private void setupYoutubeButton(final Context c) {
 		ImageView youtube = (ImageView) findViewById(R.id.youtube);
 		youtube.setOnClickListener(new OnClickListener() {
