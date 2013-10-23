@@ -1,6 +1,7 @@
 package com.scowalt.newlegacyincapp;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,6 +14,14 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 import com.google.android.youtube.player.YouTubeIntents;
 
@@ -47,6 +56,66 @@ public class MainActivity extends Activity {
 
 		setupSocialMediaButtons();
 
+		updateTwitchStatus();
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ConfigurationBuilder cb = new ConfigurationBuilder();
+				cb.setDebugEnabled(true)
+						.setOAuthConsumerKey("7mO9mYc9bKfKJjEE0lZnQ")
+						.setOAuthConsumerSecret(
+								"Q8rhqjLDweZybwI4dr5fl8dOJEtmQxWLdehD8xEPCE")
+						.setOAuthAccessToken(
+								"256291657-Yvacx98m6NWk34BQLhrknI5xDFgLoLoqZ39nMAYQ")
+						.setOAuthAccessTokenSecret(
+								"2cI2neRWiqK07IBUrigiJ0FgZ85EYnLtZFHQfKO9N5Rxo");
+				TwitterFactory tf = new TwitterFactory(cb.build());
+				Twitter twitter = tf.getInstance();
+				Query q = new Query("from:newlegacyinc");
+				try {
+					QueryResult result = twitter.search(q);
+					if (result.getTweets().size() != 0) {
+						final LinearLayout all = (LinearLayout) findViewById(R.id.all);
+						MainActivity.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								all.removeViewAt(0);
+							}
+						});
+						List<Status> statuses = result.getTweets();
+						final Status latest = statuses.get(0);
+						Log.v(TAG, "@" + latest.getUser().getScreenName() + ":"
+								+ latest.getText());
+						MainActivity.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+
+								final TextView tv = new TextView(
+										MainActivity.this);
+								LayoutParams params = new LinearLayout.LayoutParams(
+										LinearLayout.LayoutParams.MATCH_PARENT,
+										LinearLayout.LayoutParams.MATCH_PARENT,
+										3);
+								tv.setLayoutParams(params);
+								tv.setGravity(Gravity.CENTER);
+								tv.setText("@"
+										+ latest.getUser().getScreenName()
+										+ ":" + latest.getText());
+								all.addView(tv, 0);
+							}
+						});
+					}
+				} catch (TwitterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
+	}
+
+	private void updateTwitchStatus() {
 		new Thread(new Runnable() {
 			public void run() {
 				HttpClient httpclient = new DefaultHttpClient();
@@ -119,20 +188,21 @@ public class MainActivity extends Activity {
 		setupTumblrButton();
 
 		setupTwitterButton();
-		
+
 		setupSteamButton();
 	}
 
-	private void setupSteamButton(){
+	private void setupSteamButton() {
 		ImageView steam = (ImageView) findViewById(R.id.steam);
 		steam.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(STEAM_GROUP_URL)));
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri
+						.parse(STEAM_GROUP_URL)));
 			}
 		});
 	}
-	
+
 	private void setupYoutubeButton(final Context c) {
 		ImageView youtube = (ImageView) findViewById(R.id.youtube);
 		youtube.setOnClickListener(new OnClickListener() {
