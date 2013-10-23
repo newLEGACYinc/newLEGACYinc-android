@@ -7,17 +7,23 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class TwitchBroadcastReceiver extends BroadcastReceiver {
 	private static final String TAG = "TwitchBroadcastReceiver";
-	private static boolean previouslyOnline = false;
 	private static int MID = 123;
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
 		Log.d(TAG, "onReceive() called");
+		final SharedPreferences prefs = context.getSharedPreferences(
+				MainActivity.PREFS_NAME, Context.MODE_PRIVATE);
+		final boolean previouslyOnline = prefs.getBoolean("previouslyOnline",
+				false);
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -33,7 +39,9 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 					}
 				}
 				if (currentlyOnline != previouslyOnline) {
-					previouslyOnline = currentlyOnline;
+					Editor editor = prefs.edit();
+					editor.putBoolean("previouslyOnline", currentlyOnline);
+					editor.commit();
 				}
 			}
 		}).start();
