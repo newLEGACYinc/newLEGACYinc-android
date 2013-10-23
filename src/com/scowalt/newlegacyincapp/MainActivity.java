@@ -27,7 +27,10 @@ import com.google.android.youtube.player.YouTubeIntents;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -45,9 +48,10 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "newLegacyInc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "newLegacyInc";
+	private static final String TWITCH_USERNAME = "imaqtpie";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
+	private static final int REQUEST_CODE = 0; // TODO I don't know what this is
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class MainActivity extends Activity {
 		setupSocialMediaButtons();
 
 		updateTwitchStatus();
+
+		registerTwitchAlarm(this);
 
 		new Thread(new Runnable() {
 			@Override
@@ -69,8 +75,8 @@ public class MainActivity extends Activity {
 						removeKaneFace();
 						List<Status> statuses = result.getTweets();
 						final Status latest = statuses.get(0);
-						Log.v(TAG, "@" + latest.getUser().getScreenName() + ":"
-								+ latest.getText());
+						Log.v(TAG, "@" + latest.getUser().getScreenName()
+								+ ": " + latest.getText());
 						MainActivity.this.runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
@@ -84,7 +90,7 @@ public class MainActivity extends Activity {
 								tv.setGravity(Gravity.CENTER);
 								tv.setText("@"
 										+ latest.getUser().getScreenName()
-										+ ":" + latest.getText());
+										+ ": " + latest.getText());
 								all.addView(tv, 0);
 							}
 						});
@@ -96,6 +102,28 @@ public class MainActivity extends Activity {
 
 			}
 		}).start();
+	}
+
+	/**
+	 * http://stackoverflow.com/a/16155107/1222411
+	 * 
+	 * @param context
+	 */
+	private void registerTwitchAlarm(Context context) {
+		Intent i = new Intent(context, TwitchBroadcastReceiver.class);
+
+		PendingIntent sender = PendingIntent.getBroadcast(context,
+				REQUEST_CODE, i, 0);
+
+		long firstTime = SystemClock.elapsedRealtime();
+		firstTime += 3 * 1000;// start 3 seconds after first register.
+
+		long interval = 1 * 10 * 1000; // 10 second interval
+
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+				interval, sender);
 	}
 
 	private void removeKaneFace() {
@@ -171,7 +199,7 @@ public class MainActivity extends Activity {
 	 * @return JSONObject containing information about the stream that's online,
 	 *         or null for an offline stream
 	 */
-	private JSONObject twitchStatus() {
+	public static JSONObject twitchStatus() {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet("https://api.twitch.tv/kraken/streams/"
