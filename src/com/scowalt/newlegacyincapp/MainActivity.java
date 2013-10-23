@@ -73,7 +73,6 @@ public class MainActivity extends Activity {
 				try {
 					QueryResult result = twitter.search(q);
 					if (result.getTweets().size() != 0) {
-						removeKaneFace();
 						List<Status> statuses = result.getTweets();
 						final Status latest = statuses.get(0);
 						Log.v(TAG, "@" + latest.getUser().getScreenName()
@@ -81,18 +80,10 @@ public class MainActivity extends Activity {
 						MainActivity.this.runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								LinearLayout all = (LinearLayout) findViewById(R.id.all);
-								TextView tv = new TextView(MainActivity.this);
-								LayoutParams params = new LinearLayout.LayoutParams(
-										LinearLayout.LayoutParams.MATCH_PARENT,
-										LinearLayout.LayoutParams.MATCH_PARENT,
-										3);
-								tv.setLayoutParams(params);
-								tv.setGravity(Gravity.CENTER);
-								tv.setText("@"
+								TextView tweet = (TextView) findViewById(R.id.tweet);
+								tweet.setText("@"
 										+ latest.getUser().getScreenName()
-										+ ": " + latest.getText());
-								all.addView(tv, 0);
+										+ ":\n" + latest.getText());
 							}
 						});
 					}
@@ -125,16 +116,6 @@ public class MainActivity extends Activity {
 				.getSystemService(ALARM_SERVICE);
 		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
 				interval, sender);
-	}
-
-	private void removeKaneFace() {
-		final LinearLayout all = (LinearLayout) findViewById(R.id.all);
-		MainActivity.this.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				all.removeView(findViewById(R.id.kaneface));
-			}
-		});
 	}
 
 	private TwitterFactory setupTwitterFactory() {
@@ -311,7 +292,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void setupTwitterButton() {
-		ImageView nlTwitter = (ImageView) findViewById(R.id.twitter);
+		ImageView nlTwitter = (ImageView) findViewById(R.id.twitter_image);
 		nlTwitter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

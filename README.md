@@ -11,6 +11,7 @@ Libraries
   - [Youtube Android Player API](https://developers.google.com/youtube/android/player/)
   - [Twitter4J](http://twitter4j.org/en/index.html)
   - Android Support Library v4 (for compatibility)
+  - Android Support Library v7 GridLayout
 
 Art assets
 -----
