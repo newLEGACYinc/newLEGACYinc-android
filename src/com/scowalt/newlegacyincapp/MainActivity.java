@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "newLegacyInc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "newlegacyinc";
+	private static final String TWITCH_USERNAME = "newLegacyInc";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 
@@ -66,13 +66,7 @@ public class MainActivity extends Activity {
 				try {
 					QueryResult result = twitter.search(q);
 					if (result.getTweets().size() != 0) {
-						final LinearLayout all = (LinearLayout) findViewById(R.id.all);
-						MainActivity.this.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								all.removeViewAt(0);
-							}
-						});
+						removeKaneFace();
 						List<Status> statuses = result.getTweets();
 						final Status latest = statuses.get(0);
 						Log.v(TAG, "@" + latest.getUser().getScreenName() + ":"
@@ -80,9 +74,8 @@ public class MainActivity extends Activity {
 						MainActivity.this.runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-
-								final TextView tv = new TextView(
-										MainActivity.this);
+								LinearLayout all = (LinearLayout) findViewById(R.id.all);
+								TextView tv = new TextView(MainActivity.this);
 								LayoutParams params = new LinearLayout.LayoutParams(
 										LinearLayout.LayoutParams.MATCH_PARENT,
 										LinearLayout.LayoutParams.MATCH_PARENT,
@@ -105,6 +98,16 @@ public class MainActivity extends Activity {
 		}).start();
 	}
 
+	private void removeKaneFace() {
+		final LinearLayout all = (LinearLayout) findViewById(R.id.all);
+		MainActivity.this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				all.removeView(findViewById(R.id.kaneface));
+			}
+		});
+	}
+
 	private TwitterFactory setupTwitterFactory() {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
@@ -121,64 +124,76 @@ public class MainActivity extends Activity {
 	private void updateTwitchStatus() {
 		new Thread(new Runnable() {
 			public void run() {
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpContext localContext = new BasicHttpContext();
-				HttpGet httpget = new HttpGet(
-						"https://api.twitch.tv/kraken/streams/"
-								+ TWITCH_USERNAME + "?client_id="
-								+ TWITCH_CLIENT_ID);
+				final JSONObject stream = twitchStatus();
 
-				HttpResponse response = null;
-				try {
-					response = httpclient.execute(httpget, localContext);
-
-					HttpEntity entity = response.getEntity();
-					if (entity != null) {
-						String str = EntityUtils.toString(entity);
-						JSONObject json = new JSONObject(str);
-						final Object stream = json.get("stream");
-
-						Log.v(TAG, stream.toString());
-						if (!stream.toString().equals("null")) {
-							final String game = (new JSONObject(
-									stream.toString())).get("game").toString();
-							MainActivity.this.runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									final LinearLayout all = (LinearLayout) findViewById(R.id.all);
-									final TextView tv = new TextView(
-											MainActivity.this);
-									LayoutParams params = new LinearLayout.LayoutParams(
-											LinearLayout.LayoutParams.MATCH_PARENT,
-											LinearLayout.LayoutParams.MATCH_PARENT,
-											3);
-									tv.setLayoutParams(params);
-									tv.setGravity(Gravity.CENTER);
-									tv.setText("newLEGACYInc is live! Playing "
-											+ game);
-									tv.setSingleLine();
-									tv.setTextSize(20);
-									tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-									tv.setMarqueeRepeatLimit(-1);
-									tv.setSelected(true);
-									all.addView(tv, 1);
-									;
-								}
-							});
-						}
+				if (!(stream == null)) {
+					String str = null;
+					try {
+						str = stream.get("game").toString();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					final String game = str;
+					MainActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							final LinearLayout all = (LinearLayout) findViewById(R.id.all);
+							final TextView tv = new TextView(MainActivity.this);
+							LayoutParams params = new LinearLayout.LayoutParams(
+									LinearLayout.LayoutParams.MATCH_PARENT,
+									LinearLayout.LayoutParams.MATCH_PARENT, 3);
+							tv.setLayoutParams(params);
+							tv.setGravity(Gravity.CENTER);
+							tv.setText("newLEGACYInc is live! Playing " + game);
+							tv.setSingleLine();
+							tv.setTextSize(20);
+							tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+							tv.setMarqueeRepeatLimit(-1);
+							tv.setSelected(true);
+							all.addView(tv, 1);
+						}
+					});
 				}
 			}
 		}).start();
+	}
+
+	/**
+	 * @return JSONObject containing information about the stream that's online,
+	 *         or null for an offline stream
+	 */
+	private JSONObject twitchStatus() {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		HttpGet httpget = new HttpGet("https://api.twitch.tv/kraken/streams/"
+				+ TWITCH_USERNAME + "?client_id=" + TWITCH_CLIENT_ID);
+		HttpResponse response = null;
+		try {
+			response = httpclient.execute(httpget, localContext);
+
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				String str = EntityUtils.toString(entity);
+				JSONObject json = new JSONObject(str);
+				final Object stream = json.get("stream");
+
+				Log.v(TAG, stream.toString());
+				if (stream.toString().equals("null"))
+					return null;
+				return (JSONObject) stream;
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void setupSocialMediaButtons() {
@@ -222,12 +237,15 @@ public class MainActivity extends Activity {
 		ImageView twitch = (ImageView) findViewById(R.id.twitch);
 		twitch.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("http://www.twitch.tv/" + TWITCH_USERNAME
-								+ "/popout/"));
+				Intent browserIntent = twitchIntent();
 				startActivity(browserIntent);
 			}
 		});
+	}
+
+	private Intent twitchIntent() {
+		return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitch.tv/"
+				+ TWITCH_USERNAME + "/popout/"));
 	}
 
 	private void setupFacebookButton(final Context c) {
