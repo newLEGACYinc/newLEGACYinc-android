@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 											3);
 									tv.setLayoutParams(params);
 									tv.setGravity(Gravity.CENTER);
-									tv.setText("newLegacyInc is online! Playing "
+									tv.setText("newLEGACYInc is online! Playing "
 											+ game);
 									tv.setSingleLine();
 									tv.setTextSize(20);
