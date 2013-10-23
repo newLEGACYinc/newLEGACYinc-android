@@ -151,7 +151,7 @@ public class MainActivity extends Activity {
 											3);
 									tv.setLayoutParams(params);
 									tv.setGravity(Gravity.CENTER);
-									tv.setText("newLEGACYInc is online! Playing "
+									tv.setText("newLEGACYInc is live! Playing "
 											+ game);
 									tv.setSingleLine();
 									tv.setTextSize(20);
