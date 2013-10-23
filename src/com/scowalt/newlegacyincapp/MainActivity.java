@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
 	private static final String TAG = "newLegacyInc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
 	private static final String TWITCH_USERNAME = "newlegacyinc";
+	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +122,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = YouTubeIntents.createUserIntent(c,
-						"newLEGACYinc");
+						YOUTUBE_USERNAME);
 				startActivity(intent);
 			}
 		});
@@ -132,7 +133,8 @@ public class MainActivity extends Activity {
 		twitch.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("http://www.twitch.tv/newlegacyinc/popout/"));
+						.parse("http://www.twitch.tv/" + TWITCH_USERNAME
+								+ "/popout/"));
 				startActivity(browserIntent);
 			}
 		});
