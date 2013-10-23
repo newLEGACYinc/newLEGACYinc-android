@@ -35,7 +35,7 @@ public final class R {
         public static final int action_settings=0x7f080009;
         public static final int all=0x7f080000;
         public static final int facebook=0x7f080006;
-        public static final int imageView1=0x7f080001;
+        public static final int kaneface=0x7f080001;
         public static final int social_media=0x7f080002;
         public static final int steam=0x7f080008;
         public static final int tumblr=0x7f080007;

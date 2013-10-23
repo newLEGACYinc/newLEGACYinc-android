@@ -61,17 +61,7 @@ public class MainActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ConfigurationBuilder cb = new ConfigurationBuilder();
-				cb.setDebugEnabled(true)
-						.setOAuthConsumerKey("7mO9mYc9bKfKJjEE0lZnQ")
-						.setOAuthConsumerSecret(
-								"Q8rhqjLDweZybwI4dr5fl8dOJEtmQxWLdehD8xEPCE")
-						.setOAuthAccessToken(
-								"256291657-Yvacx98m6NWk34BQLhrknI5xDFgLoLoqZ39nMAYQ")
-						.setOAuthAccessTokenSecret(
-								"2cI2neRWiqK07IBUrigiJ0FgZ85EYnLtZFHQfKO9N5Rxo");
-				TwitterFactory tf = new TwitterFactory(cb.build());
-				Twitter twitter = tf.getInstance();
+				Twitter twitter = setupTwitterFactory().getInstance();
 				Query q = new Query("from:newlegacyinc");
 				try {
 					QueryResult result = twitter.search(q);
@@ -113,6 +103,19 @@ public class MainActivity extends Activity {
 
 			}
 		}).start();
+	}
+
+	private TwitterFactory setupTwitterFactory() {
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setDebugEnabled(true)
+				.setOAuthConsumerKey("7mO9mYc9bKfKJjEE0lZnQ")
+				.setOAuthConsumerSecret(
+						"Q8rhqjLDweZybwI4dr5fl8dOJEtmQxWLdehD8xEPCE")
+				.setOAuthAccessToken(
+						"256291657-Yvacx98m6NWk34BQLhrknI5xDFgLoLoqZ39nMAYQ")
+				.setOAuthAccessTokenSecret(
+						"2cI2neRWiqK07IBUrigiJ0FgZ85EYnLtZFHQfKO9N5Rxo");
+		return new TwitterFactory(cb.build());
 	}
 
 	private void updateTwitchStatus() {
