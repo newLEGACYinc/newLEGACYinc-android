@@ -21,9 +21,14 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		Log.d(TAG, "onReceive() called");
 		final SharedPreferences prefs = context.getSharedPreferences(
 				MainActivity.PREFS_NAME, Context.MODE_PRIVATE);
+		final boolean notify = prefs.getBoolean("notifyTwitchOnline", true);
+		Log.d(TAG, "notify = " + notify);
+		if (!notify)
+			return;
+
 		final boolean previouslyOnline = prefs.getBoolean("previouslyOnline",
 				false);
-
+		Log.d(TAG, "previouslyOnline = " + previouslyOnline);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

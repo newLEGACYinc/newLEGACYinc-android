@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 	static final String PREFS_NAME = "nlPrefs";
 	private static final String TAG = "newLegacyInc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "imaqtpie";
+	private static final String TWITCH_USERNAME = "newLegacyInc";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 	private static final int REQUEST_CODE = 0; // TODO I don't know what this is
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 		long firstTime = SystemClock.elapsedRealtime();
 		firstTime += 3 * 1000;// start 3 seconds after first register.
 
-		long interval = 1 * 10 * 1000; // 10 second interval
+		long interval = 20 * 60 * 1000; // 20 minute interval
 
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(ALARM_SERVICE);
