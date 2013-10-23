@@ -21,7 +21,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,6 +74,8 @@ public class MainActivity extends Activity {
 
 						Log.v(TAG, stream.toString());
 						if (!stream.toString().equals("null")) {
+							final String game = (new JSONObject(
+									stream.toString())).get("game").toString();
 							MainActivity.this.runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
@@ -81,10 +85,18 @@ public class MainActivity extends Activity {
 									LayoutParams params = new LinearLayout.LayoutParams(
 											LinearLayout.LayoutParams.MATCH_PARENT,
 											LinearLayout.LayoutParams.MATCH_PARENT,
-											1);
+											3);
 									tv.setLayoutParams(params);
-									tv.setText("newLegacyInc is online!");
-									all.addView(tv, 0);
+									tv.setGravity(Gravity.CENTER);
+									tv.setText("newLegacyInc is online! Playing "
+											+ game);
+									tv.setSingleLine();
+									tv.setTextSize(20);
+									tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+									tv.setMarqueeRepeatLimit(-1);
+									tv.setSelected(true);
+									all.addView(tv, 1);
+									;
 								}
 							});
 						}
