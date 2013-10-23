@@ -47,6 +47,13 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		}).start();
 	}
 
+	/**
+	 * https://developer.android.com/guide/topics/ui/notifiers/notifications.
+	 * html#SimpleNotification
+	 * 
+	 * @param context
+	 * @param game
+	 */
 	private void serveNotificaiton(Context context, String game) {
 		Log.d(TAG, "STREAM ONLINE");
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
@@ -56,7 +63,8 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
+
+		// MID allows you to update the notification later on.
 		mNotificationManager.notify(MID, mBuilder.build());
 	}
 }
