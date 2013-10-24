@@ -33,6 +33,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,7 +53,7 @@ public class MainActivity extends Activity {
 	private static final String TWITCH_USERNAME = "newLegacyInc";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
-	private static final int REQUEST_CODE = 0; // TODO I don't know what this is
+	private static final int REQUEST_CODE = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,35 +66,70 @@ public class MainActivity extends Activity {
 
 		registerTwitchAlarm(this);
 
+		updateLatestTweet();
+	}
+
+	private void updateLatestTweet() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				Twitter twitter = setupTwitterFactory().getInstance();
-				Query q = new Query("from:newlegacyinc");
-				try {
-					QueryResult result = twitter.search(q);
-					if (result.getTweets().size() != 0) {
-						List<Status> statuses = result.getTweets();
-						final Status latest = statuses.get(0);
-						Log.v(TAG, "@" + latest.getUser().getScreenName()
-								+ ": " + latest.getText());
-						MainActivity.this.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								TextView tweet = (TextView) findViewById(R.id.tweet);
-								tweet.setText("@"
-										+ latest.getUser().getScreenName()
-										+ ":\n" + latest.getText());
-							}
-						});
-					}
-				} catch (TwitterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				final Status latest = getLatestTweet();
+				if (latest == null) {
+					drawUnableToRetrieveTweet();
+				} else {
+					drawTweet(latest);
 				}
+			}
 
+			private void drawTweet(final Status latest) {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						TextView tweet = (TextView) findViewById(R.id.tweet);
+						tweet.setText(Html.fromHtml("<b>@"
+								+ latest.getUser().getScreenName()
+								+ ":</b><br />" + latest.getText()));
+
+					}
+				});
+			}
+
+			private void drawUnableToRetrieveTweet() {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						((TextView) findViewById(R.id.tweet))
+								.setText("Unable to retrieve twitter information");
+					}
+				});
 			}
 		}).start();
+	}
+
+	/**
+	 * Returns latest tweet that isn't a reply to another tweet
+	 * 
+	 * @return
+	 */
+	private Status getLatestTweet() {
+		Twitter twitter = setupTwitterFactory().getInstance();
+		Query q = new Query("from:newlegacyinc");
+		try {
+			QueryResult result = twitter.search(q);
+			if (result.getTweets().size() != 0) {
+				List<Status> statuses = result.getTweets();
+				Status latest = null;
+				for (Status status : statuses) {
+					if (status.getInReplyToStatusId() == -1)
+						return status;
+				}
+				return latest;
+			}
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -214,6 +250,9 @@ public class MainActivity extends Activity {
 		return null;
 	}
 
+	/**
+	 * Makes all of the social media buttons on the screen clickable
+	 */
 	private void setupSocialMediaButtons() {
 		setupYoutubeButton(this);
 
