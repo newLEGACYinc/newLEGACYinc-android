@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
 		long firstTime = SystemClock.elapsedRealtime();
 		firstTime += 3 * 1000;// start 3 seconds after first register.
 
-		long interval = 20 * 60 * 1000; // 20 minute interval
+		long interval = 15 * 60 * 1000; // 15 minute interval
 
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(ALARM_SERVICE);
@@ -221,7 +221,6 @@ public class MainActivity extends Activity {
 				JSONObject json = new JSONObject(str);
 				final Object stream = json.get("stream");
 
-				Log.v(TAG, stream.toString());
 				if (stream.toString().equals("null"))
 					return null;
 				return (JSONObject) stream;

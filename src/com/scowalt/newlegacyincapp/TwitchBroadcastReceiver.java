@@ -34,6 +34,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 			public void run() {
 				JSONObject stream = MainActivity.twitchStatus();
 				boolean currentlyOnline = stream != null;
+				Log.d(TAG, "currentlyOnline = " + currentlyOnline);
 				if (currentlyOnline && !previouslyOnline) {
 					try {
 						serveNotificaiton(context, stream.get("game")
@@ -42,14 +43,26 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				} else if (!currentlyOnline && previouslyOnline) {
+					removeNotification(context);
 				}
 				if (currentlyOnline != previouslyOnline) {
 					Editor editor = prefs.edit();
 					editor.putBoolean("previouslyOnline", currentlyOnline);
 					editor.commit();
+					Log.d(TAG, "Online value is now: " + currentlyOnline);
 				}
 			}
+
 		}).start();
+	}
+
+	private void removeNotification(Context context) {
+		Log.d(TAG, "STREAM OFFLINE: Removing notification from statusbar");
+		NotificationManager mNotificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		mNotificationManager.cancelAll();
 	}
 
 	/**
