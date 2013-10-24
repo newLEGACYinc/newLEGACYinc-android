@@ -63,7 +63,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		Log.d(TAG, "STREAM ONLINE");
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context).setSmallIcon(R.drawable.newlegacyinc_96)
-				.setContentTitle("newLegacyInc is online!")
+				.setContentTitle("newLEGACYinc is online!")
 				.setContentText("Playing: " + game);
 
 		NotificationManager mNotificationManager = (NotificationManager) context

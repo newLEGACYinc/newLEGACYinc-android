@@ -34,23 +34,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	static final String PREFS_NAME = "nlPrefs";
-	private static final String TAG = "newLegacyInc";
+	private static final String TAG = "newLEGACYinc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "newLegacyInc";
+	private static final String TWITCH_USERNAME = "ongamenet";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 	private static final int REQUEST_CODE = 0;
@@ -62,9 +58,9 @@ public class MainActivity extends Activity {
 
 		setupSocialMediaButtons();
 
-		updateTwitchStatus();
-
 		registerTwitchAlarm(this);
+
+		updateTwitchStatus();
 
 		updateLatestTweet();
 	}
@@ -113,7 +109,7 @@ public class MainActivity extends Activity {
 	 */
 	private Status getLatestTweet() {
 		Twitter twitter = setupTwitterFactory().getInstance();
-		Query q = new Query("from:newlegacyinc");
+		Query q = new Query("from:newLEGACYinc");
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
@@ -171,15 +167,12 @@ public class MainActivity extends Activity {
 		new Thread(new Runnable() {
 			public void run() {
 				final JSONObject stream = twitchStatus();
-
-				if (!(stream == null)) {
-					MainActivity.this.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							drawTwitchStatusText(stream);
-						}
-					});
-				}
+				MainActivity.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						drawTwitchStatusText(stream);
+					}
+				});
 			}
 		}).start();
 	}
@@ -190,6 +183,13 @@ public class MainActivity extends Activity {
 	 * @param stream
 	 */
 	private void drawTwitchStatusText(final JSONObject stream) {
+		final TextView tv = (TextView) findViewById(R.id.twitch_status);
+		if (stream == null) {
+			tv.setText(Html
+					.fromHtml("<b>newLEGACYinc is <font color='red'>offline</font>!</b>"));
+			return;
+		}
+
 		String game = "";
 		try {
 			game = stream.get("game").toString();
@@ -197,20 +197,9 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		final LinearLayout all = (LinearLayout) findViewById(R.id.all);
-		final TextView tv = new TextView(MainActivity.this);
-		LayoutParams params = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.MATCH_PARENT,
-				LinearLayout.LayoutParams.MATCH_PARENT, 3);
-		tv.setLayoutParams(params);
-		tv.setGravity(Gravity.CENTER);
-		tv.setText("newLEGACYInc is live! Playing " + game);
-		tv.setSingleLine();
-		tv.setTextSize(20);
-		tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-		tv.setMarqueeRepeatLimit(-1);
-		tv.setSelected(true);
-		all.addView(tv, 1);
+		tv.setText(Html
+				.fromHtml("<b>newLEGACYinc is <font color='green'>online</font>!</b><br/>Playing: "
+						+ game));
 	}
 
 	/**
@@ -324,7 +313,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("http://newlegacyinc.tumblr.com/"));
+						.parse("http://newLEGACYinc.tumblr.com/"));
 				startActivity(browserIntent);
 			}
 		});
@@ -339,10 +328,10 @@ public class MainActivity extends Activity {
 				try {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse("twitter://user?screen_name="
-									+ "newLegacyInc")));
+									+ "newLEGACYinc")));
 				} catch (Exception e) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
-							.parse("https://twitter.com/" + "newLegacyInc")));
+							.parse("https://twitter.com/" + "newLEGACYinc")));
 				}
 			}
 		});
@@ -362,7 +351,7 @@ public class MainActivity extends Activity {
 					Uri.parse("fb://profile/100002106849705"));
 		} catch (Exception e) {
 			return new Intent(Intent.ACTION_VIEW,
-					Uri.parse("https://www.facebook.com/newlegacyinc"));
+					Uri.parse("https://www.facebook.com/newLEGACYinc"));
 		}
 	}
 
