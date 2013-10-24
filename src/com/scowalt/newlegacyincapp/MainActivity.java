@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 	static final String PREFS_NAME = "nlPrefs";
 	private static final String TAG = "newLEGACYinc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "ongamenet";
+	private static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 	private static final int REQUEST_CODE = 0;
