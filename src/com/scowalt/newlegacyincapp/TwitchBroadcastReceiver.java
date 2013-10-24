@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -19,8 +20,8 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(final Context context, Intent intent) {
 		Log.d(TAG, "onReceive() called");
-		final SharedPreferences prefs = context.getSharedPreferences(
-				MainActivity.PREFS_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 		final boolean notify = prefs.getBoolean("notifyTwitchOnline", true);
 		Log.d(TAG, "notify = " + notify);
 		if (!notify)
