@@ -47,13 +47,13 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	static final String PREFS_NAME = "nlPrefs";
-	private static final String GOOGLE_API_KEY = "AIzaSyARu4tJWfd73XcTcUulBrvomTPVNWwod1w";
 	private static final String TAG = "newLEGACYinc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
 	private static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 	private static final int REQUEST_CODE = 0;
+	private static final String REDDIT_URL = "http://i.reddit.com/r/newlegacyinc";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,10 @@ public class MainActivity extends Activity {
 
 		updateLatestTweet();
 
+		updateLatestYouTube();
+	}
+
+	private void updateLatestYouTube() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -315,6 +319,19 @@ public class MainActivity extends Activity {
 		setupTwitterButton();
 
 		setupSteamButton();
+
+		setupRedditButton();
+	}
+
+	private void setupRedditButton() {
+		ImageView reddit = (ImageView) findViewById(R.id.reddit);
+		reddit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri
+						.parse(REDDIT_URL)));
+			}
+		});
 	}
 
 	private void setupSteamButton() {

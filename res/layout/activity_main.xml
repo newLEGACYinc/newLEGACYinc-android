@@ -100,7 +100,7 @@
 
         <ImageView
             android:id="@+id/facebook"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
@@ -108,7 +108,7 @@
 
         <ImageView
             android:id="@+id/tumblr"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
@@ -116,11 +116,19 @@
 
         <ImageView
             android:id="@+id/steam"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
             android:src="@drawable/steam" />
+
+        <ImageView
+            android:id="@+id/reddit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/reddit" />
+
     </LinearLayout>
 
 </LinearLayout>

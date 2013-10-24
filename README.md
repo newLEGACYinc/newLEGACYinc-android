@@ -17,3 +17,4 @@ Art assets
 
   - [Twitter icon](http://commons.wikimedia.org/wiki/File:Twitter_Shiny_Icon.svg)
   - [Steam icon](http://commons.wikimedia.org/wiki/File:Steam.gif)
+  - [Reddit icon](http://commons.wikimedia.org/wiki/File:Reddit.svg)
