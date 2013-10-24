@@ -14,7 +14,7 @@
         android:id="@+id/twitter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4" >
+        android:layout_weight="5" >
 
         <ImageView
             android:id="@+id/twitter_image"
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="Loading twitter info..."
+            android:text="Loading Twitter info..."
             android:textSize="18dp" />
 
     </LinearLayout>
@@ -38,7 +38,7 @@
         android:id="@+id/twitch_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4" >
+        android:layout_weight="5" >
 
         <ImageView
             android:id="@+id/twitch"
@@ -60,18 +60,43 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/social_media"
+        android:id="@+id/youtube_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4" >
+        android:layout_weight="5" >
 
         <ImageView
             android:id="@+id/youtube"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="8"
             android:clickable="true"
             android:src="@drawable/youtube" />
+
+        <ImageView
+            android:id="@+id/youtube_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:src="@drawable/kaneface" />
+
+        <TextView
+            android:id="@+id/youtube_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center_vertical"
+            android:maxLines="3"
+            android:text="Loading YouTube info..."
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/social_media"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6" >
 
         <ImageView
             android:id="@+id/facebook"

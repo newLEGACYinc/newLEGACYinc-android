@@ -11,7 +11,6 @@ Libraries
   - [Youtube Android Player API](https://developers.google.com/youtube/android/player/)
   - [Twitter4J](http://twitter4j.org/en/index.html)
   - Android Support Library v4 (for compatibility)
-  - [Google API Java Client](https://code.google.com/p/google-api-java-client/)
 
 Art assets
 -----

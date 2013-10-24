@@ -1,7 +1,7 @@
 package com.scowalt.newlegacyincapp;
 
 import java.io.IOException;
-import java.util.List;
+import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +34,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +47,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	static final String PREFS_NAME = "nlPrefs";
+	private static final String GOOGLE_API_KEY = "AIzaSyARu4tJWfd73XcTcUulBrvomTPVNWwod1w";
 	private static final String TAG = "newLEGACYinc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
 	private static final String TWITCH_USERNAME = "newLEGACYinc";
@@ -63,6 +67,64 @@ public class MainActivity extends Activity {
 		updateTwitchStatus();
 
 		updateLatestTweet();
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpContext localContext = new BasicHttpContext();
+				HttpGet httpget = new HttpGet(
+						"http://gdata.youtube.com/feeds/api/users/"
+								+ YOUTUBE_USERNAME + "/uploads?alt=json");
+				HttpResponse response = null;
+
+				try {
+					response = httpclient.execute(httpget, localContext);
+
+					HttpEntity entity = response.getEntity();
+					if (entity != null) {
+						String str = EntityUtils.toString(entity);
+						JSONObject json = new JSONObject(str);
+						JSONObject feeds = (JSONObject) json.get("feed");
+						JSONArray entries = (JSONArray) feeds.get("entry");
+						JSONObject latest = (JSONObject) entries.get(0);
+						JSONObject title = (JSONObject) latest.get("title");
+						final String titleText = title.get("$t").toString();
+						JSONObject mediaGroup = (JSONObject) latest
+								.get("media$group");
+						JSONArray thumbnails = (JSONArray) mediaGroup
+								.get("media$thumbnail");
+						JSONObject firstThumbnail = (JSONObject) thumbnails
+								.get(0);
+						String thumbnailUrlString = firstThumbnail.getString(
+								"url").toString();
+						URL thumbnailUrl = new URL(thumbnailUrlString);
+						final Bitmap thumbnailImage = BitmapFactory
+								.decodeStream(thumbnailUrl.openConnection()
+										.getInputStream());
+						MainActivity.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								((TextView) findViewById(R.id.youtube_description))
+										.setText(titleText);
+								((ImageView) findViewById(R.id.youtube_preview))
+										.setImageBitmap(thumbnailImage);
+							}
+						});
+					}
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
 	}
 
 	private void updateLatestTweet() {
@@ -113,7 +175,7 @@ public class MainActivity extends Activity {
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
-				List<Status> statuses = result.getTweets();
+				java.util.List<Status> statuses = result.getTweets();
 				Status latest = null;
 				for (Status status : statuses) {
 					if (status.getInReplyToStatusId() == -1)
