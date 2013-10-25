@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -70,20 +71,26 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 	 * https://developer.android.com/guide/topics/ui/notifiers/notifications.
 	 * html#SimpleNotification
 	 * 
+	 * 
 	 * @param context
 	 * @param game
 	 */
 	private void serveNotificaiton(Context context, String game) {
 		Log.d(TAG, "STREAM ONLINE");
+		// http://stackoverflow.com/a/10184570/1222411
+		Intent notificationIntent = MainActivity.twitchIntent();
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+				notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context).setSmallIcon(R.drawable.newlegacyinc_small)
 				.setContentTitle("newLEGACYinc is online!")
-				.setContentText("Playing: " + game);
+				.setContentText("Playing: " + game)
+				.setContentIntent(contentIntent).setAutoCancel(true);
 
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		// MID allows you to update the notification later on.
 		mNotificationManager.notify(MID, mBuilder.build());
 	}
 }

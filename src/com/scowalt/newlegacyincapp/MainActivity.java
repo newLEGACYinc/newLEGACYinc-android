@@ -389,7 +389,7 @@ public class MainActivity extends Activity {
 		});
 	}
 
-	private Intent twitchIntent() {
+	protected static Intent twitchIntent() {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitch.tv/"
 				+ TWITCH_USERNAME + "/popout/"));
 	}
