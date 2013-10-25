@@ -43,6 +43,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -324,7 +325,7 @@ public class MainActivity extends Activity {
 	private void setupSocialMediaButtons() {
 		setupYoutubeButton(this);
 
-		setupTwitchButton();
+		setupTwitchClickableLayout();
 
 		setupFacebookButton(this);
 
@@ -377,10 +378,11 @@ public class MainActivity extends Activity {
 		});
 	}
 
-	private void setupTwitchButton() {
-		ImageView twitch = (ImageView) findViewById(R.id.twitch);
+	private void setupTwitchClickableLayout() {
+		LinearLayout twitch = (LinearLayout) findViewById(R.id.twitch_layout);
 		twitch.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				Log.d(TAG, "Twitch onClick() called");
 				Intent browserIntent = twitchIntent();
 				startActivity(browserIntent);
 			}

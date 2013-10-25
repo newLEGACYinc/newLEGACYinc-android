@@ -23,8 +23,8 @@ public final class R {
     public static final class drawable {
         public static final int facebook=0x7f020000;
         public static final int kaneface=0x7f020001;
-        public static final int newlegacyinc_320_2=0x7f020002;
-        public static final int newlegacyinc_96=0x7f020003;
+        public static final int newlegacyinc_large=0x7f020002;
+        public static final int newlegacyinc_small=0x7f020003;
         public static final int reddit=0x7f020004;
         public static final int steam=0x7f020005;
         public static final int tumblr=0x7f020006;
