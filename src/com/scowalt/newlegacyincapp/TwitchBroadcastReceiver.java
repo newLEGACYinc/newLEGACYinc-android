@@ -22,7 +22,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		Log.d(TAG, "onReceive() called");
 		final SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		final boolean notify = prefs.getBoolean("notifyTwitchOnline", true);
+		final boolean notify = prefs.getBoolean("twitch_notification", true);
 		Log.d(TAG, "notify = " + notify);
 		if (!notify)
 			return;

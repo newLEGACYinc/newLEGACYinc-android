@@ -3,7 +3,8 @@
     android:key="preferencescreen" >
 
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="twitch_notification"
-        android:title="Twitch Notification" >
-    </CheckBoxPreference>
-</PreferenceScreen>
+        android:title="Twitch.tv Notification" />
+
+</PreferenceScreen>

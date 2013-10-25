@@ -39,6 +39,7 @@ import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -93,6 +94,7 @@ public class MainActivity extends Activity {
 						JSONObject latest = (JSONObject) entries.get(0);
 						JSONObject title = (JSONObject) latest.get("title");
 						final String titleText = title.get("$t").toString();
+						Log.d(TAG, "titleText = " + titleText);
 						JSONObject mediaGroup = (JSONObject) latest
 								.get("media$group");
 						JSONArray thumbnails = (JSONArray) mediaGroup
@@ -101,6 +103,7 @@ public class MainActivity extends Activity {
 								.get(0);
 						String thumbnailUrlString = firstThumbnail.getString(
 								"url").toString();
+						Log.d(TAG, "thumbnailUrlString = " + thumbnailUrlString);
 						URL thumbnailUrl = new URL(thumbnailUrlString);
 						final Bitmap thumbnailImage = BitmapFactory
 								.decodeStream(thumbnailUrl.openConnection()
@@ -439,4 +442,19 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings(this);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void openSettings(Context context) {
+		Intent intent = new Intent(context, SettingsActivity.class);
+		startActivity(intent);
+	}
 }

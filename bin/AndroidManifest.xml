@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.scowalt.newlegacyincapp.SettingsActivity"
+            android:label="@string/settings_name" >
+        </activity>
 
         <receiver android:name="com.scowalt.newlegacyincapp.TwitchBroadcastReceiver" />
     </application>
