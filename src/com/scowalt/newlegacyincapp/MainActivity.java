@@ -353,9 +353,15 @@ public class MainActivity extends Activity {
 		youtube.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = YouTubeIntents.createUserIntent(c,
-						YOUTUBE_USERNAME);
-				startActivity(intent);
+				try {
+					Intent intent = YouTubeIntents.createUserIntent(c,
+							YOUTUBE_USERNAME);
+					startActivity(intent);
+				} catch (Exception e) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri
+							.parse("http://www.youtube.com/user/"
+									+ YOUTUBE_USERNAME)));
+				}
 			}
 		});
 	}
