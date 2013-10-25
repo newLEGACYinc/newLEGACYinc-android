@@ -154,7 +154,18 @@ public class MainActivity extends Activity {
 						tweet.setText(Html.fromHtml("<b>@"
 								+ latest.getUser().getScreenName()
 								+ ":</b><br />" + latest.getText()));
-
+						Log.d(TAG, "Tweet id = " + latest.getId());
+						tweet.setOnClickListener(new OnClickListener() {
+							// http://wiki.akosma.com/IPhone_URL_Schemes#Twitter
+							@Override
+							public void onClick(View v) {
+								String url = "https://twitter.com/newLEGACYinc/status/"
+										+ latest.getId();
+								Intent i = new Intent(Intent.ACTION_VIEW);
+								i.setData(Uri.parse(url));
+								startActivity(i);
+							}
+						});
 					}
 				});
 			}
