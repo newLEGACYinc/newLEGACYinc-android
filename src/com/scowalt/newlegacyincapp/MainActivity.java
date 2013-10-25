@@ -42,7 +42,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -120,10 +119,10 @@ public class MainActivity extends Activity {
 							public void run() {
 								TextView description = (TextView) findViewById(R.id.youtube_description);
 								ImageView thumbnail = (ImageView) findViewById(R.id.youtube_preview);
-								OnClickListener l = new OnClickListener() {
+								OnClickListener l = new AnimatedOnClickListener() {
 									@Override
 									public void onClick(View v) {
-										applyAnimation(v, c);
+										this.onClick(v, c);
 										Intent intent = YouTubeIntents
 												.createPlayVideoIntent(
 														MainActivity.this,
@@ -176,11 +175,10 @@ public class MainActivity extends Activity {
 								+ latest.getUser().getScreenName()
 								+ ":</b><br />" + latest.getText()));
 						Log.d(TAG, "Tweet id = " + latest.getId());
-						tweet.setOnClickListener(new OnClickListener() {
-							// http://wiki.akosma.com/IPhone_URL_Schemes#Twitter
+						tweet.setOnClickListener(new AnimatedOnClickListener() {
 							@Override
 							public void onClick(View v) {
-								applyAnimation(v, c);
+								this.onClick(v, c);
 								String url = "https://twitter.com/newLEGACYinc/status/"
 										+ latest.getId();
 								Intent i = new Intent(Intent.ACTION_VIEW);
@@ -361,10 +359,10 @@ public class MainActivity extends Activity {
 
 	private void setupRedditButton(final Context c) {
 		ImageView reddit = (ImageView) findViewById(R.id.reddit);
-		reddit.setOnClickListener(new OnClickListener() {
+		reddit.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri
 						.parse(REDDIT_URL)));
 			}
@@ -373,10 +371,10 @@ public class MainActivity extends Activity {
 
 	private void setupSteamButton(final Context c) {
 		ImageView steam = (ImageView) findViewById(R.id.steam);
-		steam.setOnClickListener(new OnClickListener() {
+		steam.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri
 						.parse(STEAM_GROUP_URL)));
 			}
@@ -385,10 +383,10 @@ public class MainActivity extends Activity {
 
 	private void setupYoutubeButton(final Context c) {
 		ImageView youtube = (ImageView) findViewById(R.id.youtube);
-		youtube.setOnClickListener(new OnClickListener() {
+		youtube.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				try {
 					Intent intent = YouTubeIntents.createUserIntent(c,
 							YOUTUBE_USERNAME);
@@ -402,15 +400,11 @@ public class MainActivity extends Activity {
 		});
 	}
 
-	private void applyAnimation(View v, Context c) {
-		v.startAnimation(AnimationUtils.loadAnimation(c, R.anim.image_click));
-	}
-
 	private void setupTwitchClickableLayout(final Context c) {
 		LinearLayout twitch = (LinearLayout) findViewById(R.id.twitch_layout);
-		twitch.setOnClickListener(new OnClickListener() {
+		twitch.setOnClickListener(new AnimatedOnClickListener() {
 			public void onClick(View v) {
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				Log.d(TAG, "Twitch onClick() called");
 				Intent browserIntent = twitchIntent();
 				startActivity(browserIntent);
@@ -425,11 +419,10 @@ public class MainActivity extends Activity {
 
 	private void setupFacebookButton(final Context c) {
 		ImageView facebook = (ImageView) findViewById(R.id.facebook);
-		facebook.setOnClickListener(new OnClickListener() {
+		facebook.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.v(TAG, "Facebook has been clicked");
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				Intent facebookIntent = getOpenFacebookIntent(c);
 				Log.v(TAG, "Got facebook intent");
 				startActivity(facebookIntent);
@@ -439,10 +432,10 @@ public class MainActivity extends Activity {
 
 	private void setupTumblrButton(final Context c) {
 		ImageView tumblr = (ImageView) findViewById(R.id.tumblr);
-		tumblr.setOnClickListener(new OnClickListener() {
+		tumblr.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
 						.parse("http://newLEGACYinc.tumblr.com/"));
 				startActivity(browserIntent);
@@ -452,10 +445,10 @@ public class MainActivity extends Activity {
 
 	private void setupTwitterButton(final Context c) {
 		ImageView nlTwitter = (ImageView) findViewById(R.id.twitter_image);
-		nlTwitter.setOnClickListener(new OnClickListener() {
+		nlTwitter.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
-				applyAnimation(v, c);
+				this.onClick(v, c);
 				// http://stackoverflow.com/a/18695465/1222411
 				try {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
