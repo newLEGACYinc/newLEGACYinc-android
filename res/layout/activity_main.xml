@@ -86,6 +86,7 @@
             android:layout_height="match_parent"
             android:layout_weight="6"
             android:clickable="true"
+            android:contentDescription="youtube video preview"
             android:src="@drawable/kaneface" />
 
         <TextView
