@@ -94,6 +94,10 @@ public class MainActivity extends Activity {
 						JSONObject feeds = (JSONObject) json.get("feed");
 						JSONArray entries = (JSONArray) feeds.get("entry");
 						JSONObject latest = (JSONObject) entries.get(0);
+						String idURL = ((JSONObject) latest.get("id"))
+								.get("$t").toString();
+						final String videoID = idURL.substring(idURL
+								.lastIndexOf("/") + 1);
 						JSONObject title = (JSONObject) latest.get("title");
 						final String titleText = title.get("$t").toString();
 						Log.d(TAG, "titleText = " + titleText);
@@ -113,10 +117,24 @@ public class MainActivity extends Activity {
 						MainActivity.this.runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								((TextView) findViewById(R.id.youtube_description))
-										.setText(titleText);
-								((ImageView) findViewById(R.id.youtube_preview))
-										.setImageBitmap(thumbnailImage);
+								TextView description = (TextView) findViewById(R.id.youtube_description);
+								ImageView thumbnail = (ImageView) findViewById(R.id.youtube_preview);
+								OnClickListener l = new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Intent intent = YouTubeIntents
+												.createPlayVideoIntent(
+														MainActivity.this,
+														videoID);
+										startActivity(intent);
+									}
+								};
+
+								description.setText(titleText);
+								thumbnail.setImageBitmap(thumbnailImage);
+
+								description.setOnClickListener(l);
+								thumbnail.setOnClickListener(l);
 							}
 						});
 					}
