@@ -63,7 +63,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		mNotificationManager.cancelAll();
+		mNotificationManager.cancel(MID);
 	}
 
 	/**
