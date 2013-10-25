@@ -134,8 +134,8 @@ public class MainActivity extends Activity {
 								description.setText(titleText);
 								thumbnail.setImageBitmap(thumbnailImage);
 
-								description.setOnClickListener(l);
-								thumbnail.setOnClickListener(l);
+								LinearLayout layout = (LinearLayout) findViewById(R.id.youtube_preview_description_layout);
+								layout.setOnClickListener(l);
 							}
 						});
 					}
