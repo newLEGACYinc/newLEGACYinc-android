@@ -19,8 +19,10 @@
         <ImageView
             android:id="@+id/twitter_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="4"
+            android:adjustViewBounds="true"
             android:contentDescription="twitter icon"
             android:src="@drawable/twitter" />
 
@@ -28,6 +30,7 @@
             android:id="@+id/tweet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -52,8 +55,10 @@
         <ImageView
             android:id="@+id/youtube_icon"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="4"
+            android:adjustViewBounds="true"
             android:clickable="true"
             android:contentDescription="youtube icon"
             android:src="@drawable/youtube" />
@@ -62,6 +67,7 @@
             android:id="@+id/youtube_preview_description_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:clickable="true" >
 
@@ -78,12 +84,14 @@
                 android:id="@+id/youtube_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"
                 android:clickable="false"
                 android:gravity="center_vertical"
                 android:maxLines="3"
                 android:text="Loading YouTube info..."
                 android:textSize="18sp" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -103,8 +111,10 @@
         <ImageView
             android:id="@+id/twitch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="4"
+            android:adjustViewBounds="true"
             android:clickable="false"
             android:contentDescription="twitch.tv icon"
             android:src="@drawable/twitch_logo" />
@@ -112,7 +122,9 @@
         <TextView
             android:id="@+id/twitch_status"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1"
             android:clickable="false"
             android:gravity="center_vertical"
@@ -137,8 +149,9 @@
         <ImageView
             android:id="@+id/facebook"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:clickable="true"
             android:contentDescription="facebook icon"
             android:src="@drawable/facebook" />
@@ -146,8 +159,10 @@
         <ImageView
             android:id="@+id/tumblr"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:clickable="true"
             android:contentDescription="tumblr icon"
             android:src="@drawable/tumblr" />
@@ -155,8 +170,10 @@
         <ImageView
             android:id="@+id/steam"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:clickable="true"
             android:contentDescription="steam icon"
             android:src="@drawable/steam" />
@@ -164,8 +181,9 @@
         <ImageView
             android:id="@+id/reddit"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:clickable="true"
             android:contentDescription="reddit icon"
             android:src="@drawable/reddit" />
