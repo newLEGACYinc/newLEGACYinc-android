@@ -45,6 +45,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -66,11 +67,7 @@ public class MainActivity extends Activity {
 
 		registerTwitchAlarm(this);
 
-		updateTwitchStatus();
-
-		updateLatestTweet(this);
-
-		updateLatestYouTube(this);
+		refreshScreen(this);
 	}
 
 	private void updateLatestYouTube(final Context c) {
@@ -389,7 +386,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void setupYoutubeButton(final Context c) {
-		ImageView youtube = (ImageView) findViewById(R.id.youtube);
+		ImageView youtube = (ImageView) findViewById(R.id.youtube_icon);
 		youtube.setOnClickListener(new AnimatedOnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -500,9 +497,22 @@ public class MainActivity extends Activity {
 		case R.id.action_settings:
 			openSettings(this);
 			return true;
+		case R.id.refresh:
+			Toast.makeText(this, "Loading latest data...", Toast.LENGTH_SHORT)
+					.show();
+			refreshScreen(this);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void refreshScreen(Context context) {
+		updateTwitchStatus();
+
+		updateLatestTweet(context);
+
+		updateLatestYouTube(context);
 	}
 
 	private void openSettings(Context context) {
