@@ -123,11 +123,18 @@ public class MainActivity extends Activity {
 									@Override
 									public void onClick(View v) {
 										this.onClick(v, c);
-										Intent intent = YouTubeIntents
-												.createPlayVideoIntent(
-														MainActivity.this,
-														videoID);
-										startActivity(intent);
+										try {
+											Intent intent = YouTubeIntents
+													.createPlayVideoIntent(
+															MainActivity.this,
+															videoID);
+											startActivity(intent);
+										} catch (Exception e) {
+											startActivity(new Intent(
+													Intent.ACTION_VIEW,
+													Uri.parse("http://www.youtube.com/watch?v="
+															+ videoID)));
+										}
 									}
 								};
 
