@@ -24,37 +24,42 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int facebook=0x7f020000;
-        public static final int kaneface=0x7f020001;
-        public static final int newlegacyinc_large=0x7f020002;
-        public static final int newlegacyinc_small=0x7f020003;
-        public static final int reddit=0x7f020004;
-        public static final int steam=0x7f020005;
-        public static final int tumblr=0x7f020006;
-        public static final int twitch_logo=0x7f020007;
-        public static final int twitter=0x7f020008;
-        public static final int youtube=0x7f020009;
+        public static final int background=0x7f020000;
+        public static final int facebook=0x7f020001;
+        public static final int kaneface=0x7f020002;
+        public static final int line=0x7f020003;
+        public static final int newlegacyinc_large=0x7f020004;
+        public static final int newlegacyinc_small=0x7f020005;
+        public static final int reddit=0x7f020006;
+        public static final int steam=0x7f020007;
+        public static final int tumblr=0x7f020008;
+        public static final int twitch_logo=0x7f020009;
+        public static final int twitter=0x7f02000a;
+        public static final int youtube=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0012;
+        public static final int ImageView01=0x7f0a000a;
+        public static final int ImageView02=0x7f0a000e;
+        public static final int action_settings=0x7f0a0015;
         public static final int all=0x7f0a0000;
-        public static final int facebook=0x7f0a000d;
-        public static final int reddit=0x7f0a0010;
-        public static final int refresh=0x7f0a0011;
-        public static final int social_media=0x7f0a000c;
-        public static final int steam=0x7f0a000f;
-        public static final int tumblr=0x7f0a000e;
+        public static final int facebook=0x7f0a0010;
+        public static final int imageView1=0x7f0a0004;
+        public static final int reddit=0x7f0a0013;
+        public static final int refresh=0x7f0a0014;
+        public static final int social_media=0x7f0a000f;
+        public static final int steam=0x7f0a0012;
+        public static final int tumblr=0x7f0a0011;
         public static final int tweet=0x7f0a0003;
-        public static final int twitch=0x7f0a000a;
-        public static final int twitch_layout=0x7f0a0009;
-        public static final int twitch_status=0x7f0a000b;
+        public static final int twitch=0x7f0a000c;
+        public static final int twitch_layout=0x7f0a000b;
+        public static final int twitch_status=0x7f0a000d;
         public static final int twitter=0x7f0a0001;
         public static final int twitter_image=0x7f0a0002;
-        public static final int youtube_description=0x7f0a0008;
-        public static final int youtube_icon=0x7f0a0005;
-        public static final int youtube_layout=0x7f0a0004;
-        public static final int youtube_preview=0x7f0a0007;
-        public static final int youtube_preview_description_layout=0x7f0a0006;
+        public static final int youtube_description=0x7f0a0009;
+        public static final int youtube_icon=0x7f0a0006;
+        public static final int youtube_layout=0x7f0a0005;
+        public static final int youtube_preview=0x7f0a0008;
+        public static final int youtube_preview_description_layout=0x7f0a0007;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

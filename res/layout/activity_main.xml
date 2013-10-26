@@ -36,6 +36,12 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:src="@drawable/line" />
+
     <LinearLayout
         android:id="@+id/youtube_layout"
         android:layout_width="match_parent"
@@ -81,6 +87,12 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/ImageView01"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:src="@drawable/line" />
+
     <LinearLayout
         android:id="@+id/twitch_layout"
         android:layout_width="match_parent"
@@ -109,10 +121,17 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/ImageView02"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:src="@drawable/line" />
+
     <LinearLayout
         android:id="@+id/social_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_weight="6" >
 
         <ImageView
