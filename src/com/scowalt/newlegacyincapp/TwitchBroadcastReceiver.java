@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class TwitchBroadcastReceiver extends BroadcastReceiver {
 	private static final String TAG = "TwitchBroadcastReceiver";
-	private static int MID = 123;
+	private static final int MID = 123;
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
@@ -29,8 +29,8 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		if (!notify)
 			return;
 
-		final boolean previouslyOnline = prefs.getBoolean("previouslyOnline",
-				false);
+		final boolean previouslyOnline = prefs.getBoolean(
+				"_twitch_previouslyOnline", false);
 		Log.d(TAG, "previouslyOnline = " + previouslyOnline);
 		new Thread(new Runnable() {
 			@Override

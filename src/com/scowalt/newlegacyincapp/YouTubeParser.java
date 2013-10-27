@@ -2,7 +2,10 @@ package com.scowalt.newlegacyincapp;
 
 import java.io.IOException;
 import java.net.URL;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -15,7 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,7 +31,8 @@ import android.util.Log;
  * 
  */
 public class YouTubeParser {
-	private static String TAG = "YouTubeParser";
+	private final static String TAG = "YouTubeParser";
+	final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 	/**
 	 * Returns a list of newLEGACYinc's YouTube videos in the YouTube JSON
@@ -36,8 +40,12 @@ public class YouTubeParser {
 	 * 
 	 * @param c
 	 * @return
+	 * @throws IOException
+	 * @throws ClientProtocolException
+	 * @throws JSONException
 	 */
-	public static JSONObject getYouTubeList(final Context c) {
+	public static JSONObject getYouTubeList(final Context c)
+			throws ClientProtocolException, IOException, JSONException {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet(
@@ -45,23 +53,11 @@ public class YouTubeParser {
 						+ MainActivity.YOUTUBE_USERNAME + "/uploads?alt=json");
 		HttpResponse response = null;
 
-		try {
-			response = httpclient.execute(httpget, localContext);
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				String str = EntityUtils.toString(entity);
-				return new JSONObject(str);
-			}
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			Log.e(TAG, "getYouTubeList() ClientProtocolException");
-		} catch (IOException e) {
-			Log.e(TAG, "getYouTubeList() IOException");
-			e.printStackTrace();
-		} catch (JSONException e) {
-			Log.e(TAG, "getYouTubeList() JSONException");
-			e.printStackTrace();
+		response = httpclient.execute(httpget, localContext);
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+			String str = EntityUtils.toString(entity);
+			return new JSONObject(str);
 		}
 		return null;
 	}
@@ -100,5 +96,16 @@ public class YouTubeParser {
 		URL thumbnailUrl = new URL(thumbnailUrlString);
 		return BitmapFactory.decodeStream(thumbnailUrl.openConnection()
 				.getInputStream());
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	public static Date getVideoPublishedDate(JSONObject video)
+			throws JSONException, ParseException {
+		JSONObject published = (JSONObject) video.get("published");
+		String date = published.get("$t").toString();
+		// "2013-10-22T02:32:58.000Z"
+		DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+		Log.d(TAG, df.parse(date).toString());
+		return df.parse(date);
 	}
 }

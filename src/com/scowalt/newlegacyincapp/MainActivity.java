@@ -79,8 +79,8 @@ public class MainActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				JSONObject json = YouTubeParser.getYouTubeList(c);
 				try {
+					JSONObject json = YouTubeParser.getYouTubeList(c);
 					JSONObject latest = YouTubeParser.getLatestVideo(json);
 					final String videoID = YouTubeParser.getVideoID(latest);
 					final String titleText = YouTubeParser
@@ -96,18 +96,7 @@ public class MainActivity extends Activity {
 								@Override
 								public void onClick(View v) {
 									this.onClick(v, c);
-									try {
-										Intent intent = YouTubeIntents
-												.createPlayVideoIntent(
-														MainActivity.this,
-														videoID);
-										startActivity(intent);
-									} catch (Exception e) {
-										startActivity(new Intent(
-												Intent.ACTION_VIEW,
-												Uri.parse("http://www.youtube.com/watch?v="
-														+ videoID)));
-									}
+									startActivity(youTubeVideoIntent(c, videoID));
 								}
 							};
 
@@ -201,7 +190,7 @@ public class MainActivity extends Activity {
 				return latest;
 			}
 		} catch (TwitterException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "getLatestTweet() TwitterException");
 			e.printStackTrace();
 		}
 		return null;
@@ -274,7 +263,7 @@ public class MainActivity extends Activity {
 		try {
 			game = stream.get("game").toString();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "drawTwitchStatusText() JSONException");
 			e.printStackTrace();
 		}
 		tv.setText(Html.fromHtml("<b>" + TWITCH_USERNAME
@@ -306,13 +295,13 @@ public class MainActivity extends Activity {
 				return (JSONObject) stream;
 			}
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "twitchStatus() ClientProtocolException");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "twitchStatus() IOException");
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "twitchStatus() JSONException");
 			e.printStackTrace();
 		}
 		return null;
@@ -496,5 +485,13 @@ public class MainActivity extends Activity {
 	private void openSettings(Context context) {
 		Intent intent = new Intent(context, SettingsActivity.class);
 		startActivity(intent);
+	}
+
+	static Intent youTubeVideoIntent(Context c, String id) {
+		if (YouTubeIntents.canResolvePlayVideoIntent(c)) {
+			return YouTubeIntents.createPlayVideoIntent(c, id);
+		}
+		return new Intent(Intent.ACTION_VIEW,
+				Uri.parse("http://www.youtube.com/watch?v=" + id));
 	}
 }
