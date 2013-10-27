@@ -35,6 +35,7 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 		final SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		final boolean notify = prefs.getBoolean("youtube_notification", true);
+		Log.d(TAG, "Notify = " + notify);
 		if (!notify)
 			return;
 
@@ -59,7 +60,8 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 						Date date = YouTubeParser.getVideoPublishedDate(latest);
 						Log.d(TAG, "Latest video id = " + videoID);
 						Log.d(TAG, "Latest video date = " + date.toString());
-						if (!videoID.equals(previousVideoID)
+						if (!(previousVideoID == null)
+								&& !videoID.equals(previousVideoID)
 								&& date.after(previousDate)) {
 							String title = YouTubeParser.getVideoTitle(latest);
 							serveNotification(context, title, videoID);

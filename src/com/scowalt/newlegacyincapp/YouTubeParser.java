@@ -103,7 +103,6 @@ public class YouTubeParser {
 			throws JSONException, ParseException {
 		JSONObject published = (JSONObject) video.get("published");
 		String date = published.get("$t").toString();
-		// "2013-10-22T02:32:58.000Z"
 		DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 		Log.d(TAG, df.parse(date).toString());
 		return df.parse(date);

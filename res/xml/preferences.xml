@@ -6,5 +6,9 @@
         android:defaultValue="true"
         android:key="twitch_notification"
         android:title="Twitch.tv Notifications" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="youtube_notification"
+        android:title="YouTube Notifications" />
 
 </PreferenceScreen>
