@@ -7,3 +7,6 @@
 # view AndroidManifest.xml #generated:33
 -keep class com.scowalt.newlegacyincapp.TwitchBroadcastReceiver { <init>(...); }
 
+# view AndroidManifest.xml #generated:34
+-keep class com.scowalt.newlegacyincapp.YouTubeBroadcastReceiver { <init>(...); }
+

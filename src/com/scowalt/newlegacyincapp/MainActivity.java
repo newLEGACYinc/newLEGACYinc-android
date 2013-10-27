@@ -51,12 +51,14 @@ public class MainActivity extends Activity {
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
 	protected static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
+	private static final long YOUTUBE_ALARM_INTERVAL_MINUTES = 1;
 	static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String TWITTER_USERNAME = "newLEGACYinc";
 	private static final String TUMBLR_USERNAME = "newLEGACYinc";
 	private static final String FACEBOOK_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
-	private static final int REQUEST_CODE = 0;
+	private static final int TWITCH_REQUEST_CODE = 120;
+	private static final int YOUTUBE_REQUEST_CODE = 121;
 	private static final String REDDIT_URL = "http://i.reddit.com/r/newlegacyinc";
 
 	@Override
@@ -67,6 +69,7 @@ public class MainActivity extends Activity {
 		setupSocialMediaButtons();
 
 		registerTwitchAlarm(this);
+		registerYouTubeAlarm(this);
 	}
 
 	protected void onResume() {
@@ -205,12 +208,30 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(context, TwitchBroadcastReceiver.class);
 
 		PendingIntent sender = PendingIntent.getBroadcast(context,
-				REQUEST_CODE, i, 0);
+				TWITCH_REQUEST_CODE, i, 0);
 
 		long firstTime = SystemClock.elapsedRealtime();
-		firstTime += 0 * 1000;// start 3 seconds after first register.
+		firstTime += 3 * 1000;// start 3 seconds after first register.
 
 		long interval = TWITCH_ALARM_INTERVAL_MINUTES * 60 * 1000;
+
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+				interval, sender);
+	}
+
+	private void registerYouTubeAlarm(Context context) {
+		Log.d(TAG, "Registering YouTube alarm...");
+		Intent i = new Intent(context, YouTubeBroadcastReceiver.class);
+
+		PendingIntent sender = PendingIntent.getBroadcast(context,
+				YOUTUBE_REQUEST_CODE, i, 0);
+
+		long firstTime = SystemClock.elapsedRealtime();
+		firstTime += 3 * 1000;// start 3 seconds after first register.
+
+		long interval = YOUTUBE_ALARM_INTERVAL_MINUTES * 60 * 1000;
 
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(ALARM_SERVICE);

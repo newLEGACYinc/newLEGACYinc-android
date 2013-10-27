@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.http.client.ClientProtocolException;
@@ -18,6 +19,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -38,9 +40,15 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 
 		final String previousVideoID = prefs.getString("_youtube_id", null);
 		final String previousVideoDate = prefs.getString("_youtube_date", null);
-		DateFormat df = new SimpleDateFormat(YouTubeParser.DATE_FORMAT);
+		Log.d(TAG, "Previous video id = " + previousVideoID);
+		Log.d(TAG, "Previous video date = " + previousVideoDate);
+		final DateFormat df = new SimpleDateFormat(YouTubeParser.DATE_FORMAT);
 		try {
-			final Date previousDate = df.parse(previousVideoDate);
+			final Date previousDate;
+			if (previousVideoDate == null)
+				previousDate = getEarlyDate();
+			else
+				previousDate = df.parse(previousVideoDate);
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -49,10 +57,18 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 						JSONObject latest = YouTubeParser.getLatestVideo(json);
 						String videoID = YouTubeParser.getVideoID(latest);
 						Date date = YouTubeParser.getVideoPublishedDate(latest);
+						Log.d(TAG, "Latest video id = " + videoID);
+						Log.d(TAG, "Latest video date = " + date.toString());
 						if (!videoID.equals(previousVideoID)
 								&& date.after(previousDate)) {
 							String title = YouTubeParser.getVideoTitle(latest);
 							serveNotification(context, title, videoID);
+							Editor editor = prefs.edit();
+							editor.putString("_youtube_id", videoID);
+							editor.putString("_youtube_date", df.format(date));
+							editor.commit();
+						} else {
+							Log.d(TAG, "No new video");
 						}
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -73,6 +89,12 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 			Log.e(TAG, "onReceive() ParseException");
 			e.printStackTrace();
 		}
+	}
+
+	private Date getEarlyDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(1970, 01, 01);
+		return cal.getTime();
 	}
 
 	private void serveNotification(Context context, String title, String id) {
