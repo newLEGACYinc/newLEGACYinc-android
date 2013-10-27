@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
 	protected static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
-	private static final long YOUTUBE_ALARM_INTERVAL_MINUTES = 1;
+	private static final long YOUTUBE_ALARM_INTERVAL_MINUTES = 60;
 	static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String TWITTER_USERNAME = "newLEGACYinc";
 	private static final String TUMBLR_USERNAME = "newLEGACYinc";
