@@ -24,18 +24,17 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int background=0x7f020000;
-        public static final int facebook=0x7f020001;
-        public static final int kaneface=0x7f020002;
-        public static final int line=0x7f020003;
-        public static final int newlegacyinc_large=0x7f020004;
-        public static final int newlegacyinc_small=0x7f020005;
-        public static final int reddit=0x7f020006;
-        public static final int steam=0x7f020007;
-        public static final int tumblr=0x7f020008;
-        public static final int twitch_logo=0x7f020009;
-        public static final int twitter=0x7f02000a;
-        public static final int youtube=0x7f02000b;
+        public static final int facebook=0x7f020000;
+        public static final int kaneface=0x7f020001;
+        public static final int line=0x7f020002;
+        public static final int newlegacyinc_large=0x7f020003;
+        public static final int newlegacyinc_small=0x7f020004;
+        public static final int reddit=0x7f020005;
+        public static final int steam=0x7f020006;
+        public static final int tumblr=0x7f020007;
+        public static final int twitch_logo=0x7f020008;
+        public static final int twitter=0x7f020009;
+        public static final int youtube=0x7f02000a;
     }
     public static final class id {
         public static final int ImageView01=0x7f0a000a;
