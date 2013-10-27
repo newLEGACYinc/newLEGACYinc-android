@@ -1,6 +1,7 @@
 package com.scowalt.newlegacyincapp;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
@@ -77,90 +78,112 @@ public class MainActivity extends Activity {
 		refreshScreen(this);
 	}
 
+	/**
+	 * Returns a list of newLEGACYinc's YouTube videos in the YouTube JSON
+	 * format
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private JSONObject getYouTubeList(final Context c) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		HttpGet httpget = new HttpGet(
+				"http://gdata.youtube.com/feeds/api/users/" + YOUTUBE_USERNAME
+						+ "/uploads?alt=json");
+		HttpResponse response = null;
+
+		try {
+			response = httpclient.execute(httpget, localContext);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				String str = EntityUtils.toString(entity);
+				return new JSONObject(str);
+			}
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			Log.e(TAG, "getYouTubeList() ClientProtocolException");
+		} catch (IOException e) {
+			Log.e(TAG, "getYouTubeList() IOException");
+			e.printStackTrace();
+		} catch (JSONException e) {
+			Log.e(TAG, "getYouTubeList() JSONException");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private void updateLatestYouTube(final Context c) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				HttpClient httpclient = new DefaultHttpClient();
-				HttpContext localContext = new BasicHttpContext();
-				HttpGet httpget = new HttpGet(
-						"http://gdata.youtube.com/feeds/api/users/"
-								+ YOUTUBE_USERNAME + "/uploads?alt=json");
-				HttpResponse response = null;
-
+				JSONObject json = getYouTubeList(c);
+				JSONObject feeds;
 				try {
-					response = httpclient.execute(httpget, localContext);
-
-					HttpEntity entity = response.getEntity();
-					if (entity != null) {
-						String str = EntityUtils.toString(entity);
-						JSONObject json = new JSONObject(str);
-						JSONObject feeds = (JSONObject) json.get("feed");
-						JSONArray entries = (JSONArray) feeds.get("entry");
-						JSONObject latest = (JSONObject) entries.get(0);
-						String idURL = ((JSONObject) latest.get("id"))
-								.get("$t").toString();
-						final String videoID = idURL.substring(idURL
-								.lastIndexOf("/") + 1);
-						JSONObject title = (JSONObject) latest.get("title");
-						final String titleText = title.get("$t").toString();
-						Log.d(TAG, "titleText = " + titleText);
-						JSONObject mediaGroup = (JSONObject) latest
-								.get("media$group");
-						JSONArray thumbnails = (JSONArray) mediaGroup
-								.get("media$thumbnail");
-						JSONObject firstThumbnail = (JSONObject) thumbnails
-								.get(0);
-						String thumbnailUrlString = firstThumbnail.getString(
-								"url").toString();
-						Log.d(TAG, "thumbnailUrlString = " + thumbnailUrlString);
-						URL thumbnailUrl = new URL(thumbnailUrlString);
-						final Bitmap thumbnailImage = BitmapFactory
-								.decodeStream(thumbnailUrl.openConnection()
-										.getInputStream());
-						MainActivity.this.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								TextView description = (TextView) findViewById(R.id.youtube_description);
-								ImageView thumbnail = (ImageView) findViewById(R.id.youtube_preview);
-								OnClickListener l = new AnimatedOnClickListener() {
-									@Override
-									public void onClick(View v) {
-										this.onClick(v, c);
-										try {
-											Intent intent = YouTubeIntents
-													.createPlayVideoIntent(
-															MainActivity.this,
-															videoID);
-											startActivity(intent);
-										} catch (Exception e) {
-											startActivity(new Intent(
-													Intent.ACTION_VIEW,
-													Uri.parse("http://www.youtube.com/watch?v="
-															+ videoID)));
-										}
+					feeds = (JSONObject) json.get("feed");
+					JSONArray entries = (JSONArray) feeds.get("entry");
+					JSONObject latest = (JSONObject) entries.get(0);
+					String idURL = ((JSONObject) latest.get("id")).get("$t")
+							.toString();
+					final String videoID = idURL.substring(idURL
+							.lastIndexOf("/") + 1);
+					JSONObject title = (JSONObject) latest.get("title");
+					final String titleText = title.get("$t").toString();
+					Log.d(TAG, "titleText = " + titleText);
+					JSONObject mediaGroup = (JSONObject) latest
+							.get("media$group");
+					JSONArray thumbnails = (JSONArray) mediaGroup
+							.get("media$thumbnail");
+					JSONObject firstThumbnail = (JSONObject) thumbnails.get(0);
+					String thumbnailUrlString = firstThumbnail.getString("url")
+							.toString();
+					Log.d(TAG, "thumbnailUrlString = " + thumbnailUrlString);
+					URL thumbnailUrl = new URL(thumbnailUrlString);
+					final Bitmap thumbnailImage = BitmapFactory
+							.decodeStream(thumbnailUrl.openConnection()
+									.getInputStream());
+					MainActivity.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							TextView description = (TextView) findViewById(R.id.youtube_description);
+							ImageView thumbnail = (ImageView) findViewById(R.id.youtube_preview);
+							OnClickListener l = new AnimatedOnClickListener() {
+								@Override
+								public void onClick(View v) {
+									this.onClick(v, c);
+									try {
+										Intent intent = YouTubeIntents
+												.createPlayVideoIntent(
+														MainActivity.this,
+														videoID);
+										startActivity(intent);
+									} catch (Exception e) {
+										startActivity(new Intent(
+												Intent.ACTION_VIEW,
+												Uri.parse("http://www.youtube.com/watch?v="
+														+ videoID)));
 									}
-								};
+								}
+							};
 
-								description.setText(titleText);
-								thumbnail.setImageBitmap(thumbnailImage);
+							description.setText(titleText);
+							thumbnail.setImageBitmap(thumbnailImage);
 
-								LinearLayout layout = (LinearLayout) findViewById(R.id.youtube_preview_description_layout);
-								layout.setOnClickListener(l);
-							}
-						});
-					}
-				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+							LinearLayout layout = (LinearLayout) findViewById(R.id.youtube_preview_description_layout);
+							layout.setOnClickListener(l);
+						}
+					});
+				} catch (JSONException e1) {
+					Log.e(TAG, "updateLatestYouTube() JSONException");
+					e1.printStackTrace();
+				} catch (MalformedURLException e1) {
+					Log.e(TAG, "updateLatestYouTube() MalformedURLException");
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					Log.e(TAG, "updateLatestYouTube() IOException");
+					e1.printStackTrace();
 				}
-
 			}
 		}).start();
 	}
