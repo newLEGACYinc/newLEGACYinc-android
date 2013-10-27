@@ -3,6 +3,7 @@ package com.scowalt.newlegacyincapp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -84,9 +85,10 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context).setSmallIcon(R.drawable.newlegacyinc_small)
-				.setContentTitle("newLEGACYinc is online!")
+				.setContentTitle(MainActivity.TWITCH_USERNAME + " is online!")
 				.setContentText("Playing: " + game)
-				.setContentIntent(contentIntent).setAutoCancel(true);
+				.setContentIntent(contentIntent).setAutoCancel(true)
+				.setDefaults(Notification.DEFAULT_ALL);
 
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);

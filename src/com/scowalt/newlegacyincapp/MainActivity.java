@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "newLEGACYinc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "newLEGACYinc";
+	protected static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String TWITTER_USERNAME = "newLEGACYinc";
@@ -190,7 +190,8 @@ public class MainActivity extends Activity {
 							@Override
 							public void onClick(View v) {
 								this.onClick(v, c);
-								String url = "https://twitter.com/" + TWITTER_USERNAME + "/status/"
+								String url = "https://twitter.com/"
+										+ TWITTER_USERNAME + "/status/"
 										+ latest.getId();
 								Intent i = new Intent(Intent.ACTION_VIEW);
 								i.setData(Uri.parse(url));
@@ -220,7 +221,7 @@ public class MainActivity extends Activity {
 	 */
 	private Status getLatestTweet() {
 		Twitter twitter = setupTwitterFactory().getInstance();
-		Query q = new Query("from:"+ TWITTER_USERNAME + "");
+		Query q = new Query("from:" + TWITTER_USERNAME + "");
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
@@ -251,7 +252,7 @@ public class MainActivity extends Activity {
 				REQUEST_CODE, i, 0);
 
 		long firstTime = SystemClock.elapsedRealtime();
-		firstTime += 3 * 1000;// start 3 seconds after first register.
+		firstTime += 0 * 1000;// start 3 seconds after first register.
 
 		long interval = TWITCH_ALARM_INTERVAL_MINUTES * 60 * 1000;
 
@@ -296,9 +297,9 @@ public class MainActivity extends Activity {
 	private void drawTwitchStatusText(final JSONObject stream) {
 		final TextView tv = (TextView) findViewById(R.id.twitch_status);
 		if (stream == null) {
-			tv.setText(Html
-					.fromHtml("<b>"+TWITCH_USERNAME + " is <font color='red'>offline</font>!</b>"));
-							
+			tv.setText(Html.fromHtml("<b>" + TWITCH_USERNAME
+					+ " is <font color='red'>offline</font>!</b>"));
+
 			return;
 		}
 
@@ -309,9 +310,9 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		tv.setText(Html
-				.fromHtml("<b>" +TWITCH_USERNAME+" is <font color='green'>online</font>!</b><br/>Playing: "
-						+ game));
+		tv.setText(Html.fromHtml("<b>" + TWITCH_USERNAME
+				+ " is <font color='green'>online</font>!</b><br/>Playing: "
+				+ game));
 	}
 
 	/**
@@ -449,7 +450,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				this.onClick(v, c);
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("http://"+TUMBLR_USERNAME+".tumblr.com/"));
+						.parse("http://" + TUMBLR_USERNAME + ".tumblr.com/"));
 				startActivity(browserIntent);
 			}
 		});
