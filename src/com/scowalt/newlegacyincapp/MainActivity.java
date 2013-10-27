@@ -54,6 +54,9 @@ public class MainActivity extends Activity {
 	private static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
+	private static final String TWITTER_USERNAME = "newLEGACYinc";
+	private static final String TUMBLR_USERNAME = "newLEGACYinc";
+	private static final String FACEBOOK_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
 	private static final int REQUEST_CODE = 0;
 	private static final String REDDIT_URL = "http://i.reddit.com/r/newlegacyinc";
@@ -187,7 +190,7 @@ public class MainActivity extends Activity {
 							@Override
 							public void onClick(View v) {
 								this.onClick(v, c);
-								String url = "https://twitter.com/newLEGACYinc/status/"
+								String url = "https://twitter.com/" + TWITTER_USERNAME + "/status/"
 										+ latest.getId();
 								Intent i = new Intent(Intent.ACTION_VIEW);
 								i.setData(Uri.parse(url));
@@ -217,7 +220,7 @@ public class MainActivity extends Activity {
 	 */
 	private Status getLatestTweet() {
 		Twitter twitter = setupTwitterFactory().getInstance();
-		Query q = new Query("from:newLEGACYinc");
+		Query q = new Query("from:"+ TWITTER_USERNAME + "");
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
@@ -294,7 +297,8 @@ public class MainActivity extends Activity {
 		final TextView tv = (TextView) findViewById(R.id.twitch_status);
 		if (stream == null) {
 			tv.setText(Html
-					.fromHtml("<b>newLEGACYinc is <font color='red'>offline</font>!</b>"));
+					.fromHtml("<b>"+TWITCH_USERNAME + " is <font color='red'>offline</font>!</b>"));
+							
 			return;
 		}
 
@@ -306,7 +310,7 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 		tv.setText(Html
-				.fromHtml("<b>newLEGACYinc is <font color='green'>online</font>!</b><br/>Playing: "
+				.fromHtml("<b>" +TWITCH_USERNAME+" is <font color='green'>online</font>!</b><br/>Playing: "
 						+ game));
 	}
 
@@ -445,7 +449,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				this.onClick(v, c);
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("http://newLEGACYinc.tumblr.com/"));
+						.parse("http://"+TUMBLR_USERNAME+".tumblr.com/"));
 				startActivity(browserIntent);
 			}
 		});
@@ -461,10 +465,10 @@ public class MainActivity extends Activity {
 				try {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse("twitter://user?screen_name="
-									+ "newLEGACYinc")));
+									+ TWITTER_USERNAME)));
 				} catch (Exception e) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
-							.parse("https://twitter.com/" + "newLEGACYinc")));
+							.parse("https://twitter.com/" + TWITTER_USERNAME)));
 				}
 			}
 		});
@@ -484,7 +488,7 @@ public class MainActivity extends Activity {
 					Uri.parse("fb://profile/100002106849705"));
 		} catch (Exception e) {
 			return new Intent(Intent.ACTION_VIEW,
-					Uri.parse("https://www.facebook.com/newLEGACYinc"));
+					Uri.parse("https://www.facebook.com/" + FACEBOOK_USERNAME));
 		}
 	}
 
