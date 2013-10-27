@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "newLEGACYinc";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final String TWITCH_USERNAME = "streamerhouse";
+	private static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
 	private static final String YOUTUBE_USERNAME = "newLEGACYinc";
 	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
@@ -68,12 +68,12 @@ public class MainActivity extends Activity {
 		registerTwitchAlarm(this);
 	}
 
-	protected void onResume(){
+	protected void onResume() {
 		super.onResume();
-		
+
 		refreshScreen(this);
 	}
-	
+
 	private void updateLatestYouTube(final Context c) {
 		new Thread(new Runnable() {
 			@Override
@@ -513,7 +513,7 @@ public class MainActivity extends Activity {
 
 	private void refreshScreen(Context context) {
 		Log.d(TAG, "Refreshing screen...");
-		
+
 		updateTwitchStatus();
 
 		updateLatestTweet(context);
