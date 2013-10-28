@@ -2,13 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preferencescreen" >
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="twitch_notification"
-        android:title="Twitch.tv Notifications" />
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="youtube_notification"
-        android:title="YouTube Notifications" />
+    <PreferenceCategory android:title="Notifications" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="twitch_notification"
+            android:title="Twitch.tv" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="youtube_notification"
+            android:title="YouTube" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="About" >
+        <Preference
+            android:key="about_preference"
+            android:title="About" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
