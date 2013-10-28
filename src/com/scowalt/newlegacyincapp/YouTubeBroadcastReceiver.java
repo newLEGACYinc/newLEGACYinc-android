@@ -109,7 +109,7 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context)
-				.setSmallIcon(R.drawable.newlegacyinc_small)
+				.setSmallIcon(R.drawable.youtube_notification)
 				.setContentTitle(
 						"New " + MainActivity.YOUTUBE_USERNAME + " video!")
 				.setContentText(title).setContentIntent(contentIntent)

@@ -83,8 +83,10 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
 				notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
+		game = game.replaceAll("&#39;", "\'");
+
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				context).setSmallIcon(R.drawable.newlegacyinc_small)
+				context).setSmallIcon(R.drawable.twitch_notification)
 				.setContentTitle(MainActivity.TWITCH_USERNAME + " is online!")
 				.setContentText("Playing: " + game)
 				.setContentIntent(contentIntent).setAutoCancel(true)

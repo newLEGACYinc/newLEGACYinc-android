@@ -33,8 +33,10 @@ public final class R {
         public static final int steam=0x7f020006;
         public static final int tumblr=0x7f020007;
         public static final int twitch_logo=0x7f020008;
-        public static final int twitter=0x7f020009;
-        public static final int youtube=0x7f02000a;
+        public static final int twitch_notification=0x7f020009;
+        public static final int twitter=0x7f02000a;
+        public static final int youtube=0x7f02000b;
+        public static final int youtube_notification=0x7f02000c;
     }
     public static final class id {
         public static final int ImageView01=0x7f0a000a;
