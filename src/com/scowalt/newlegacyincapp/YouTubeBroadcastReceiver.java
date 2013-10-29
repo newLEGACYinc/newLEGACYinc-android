@@ -59,12 +59,14 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 						String videoID = YouTubeParser.getVideoID(latest);
 						Date date = YouTubeParser.getVideoPublishedDate(latest);
 						Log.d(TAG, "Latest video id = " + videoID);
-						Log.d(TAG, "Latest video date = " + date.toString());
-						if (!(previousVideoID == null)
-								&& !videoID.equals(previousVideoID)
+						Log.d(TAG, "Latest video date = " + df.format(date));
+						if (!videoID.equals(previousVideoID)
 								&& date.after(previousDate)) {
 							String title = YouTubeParser.getVideoTitle(latest);
-							serveNotification(context, title, videoID);
+							if (!(previousVideoID == null)) {
+								serveNotification(context, title, videoID);
+							}
+							Log.d(TAG, "Changing SharedPreferences");
 							Editor editor = prefs.edit();
 							editor.putString("_youtube_id", videoID);
 							editor.putString("_youtube_date", df.format(date));
