@@ -51,7 +51,8 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 				}
 				if (currentlyOnline != previouslyOnline) {
 					Editor editor = prefs.edit();
-					editor.putBoolean("previouslyOnline", currentlyOnline);
+					editor.putBoolean("_twitch_previouslyOnline",
+							currentlyOnline);
 					editor.commit();
 					Log.d(TAG, "Online value is now: " + currentlyOnline);
 				}
