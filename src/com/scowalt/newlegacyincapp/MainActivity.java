@@ -21,6 +21,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.URLEntity;
 import twitter4j.conf.ConfigurationBuilder;
 
 import com.google.android.youtube.player.YouTubeIntents;
@@ -28,11 +29,18 @@ import com.google.android.youtube.player.YouTubeIntents;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.text.Html;
 import android.util.Log;
@@ -40,6 +48,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,6 +81,7 @@ public class MainActivity extends Activity {
 
 		registerTwitchAlarm(this);
 		registerYouTubeAlarm(this);
+
 	}
 
 	protected void onResume() {
@@ -93,6 +105,13 @@ public class MainActivity extends Activity {
 					MainActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
+							drawLatestYouTubeVideo(c, videoID, titleText,
+									thumbnailImage);
+						}
+
+						private void drawLatestYouTubeVideo(final Context c,
+								final String videoID, final String titleText,
+								final Bitmap thumbnailImage) {
 							TextView description = (TextView) findViewById(R.id.youtube_description);
 							ImageView thumbnail = (ImageView) findViewById(R.id.youtube_preview);
 							OnClickListener l = new AnimatedOnClickListener() {
@@ -124,15 +143,22 @@ public class MainActivity extends Activity {
 		}).start();
 	}
 
+	/**
+	 * Updates the latest tweet on the main activity screen
+	 * 
+	 * @param c
+	 *            Context
+	 */
 	private void updateLatestTweet(final Context c) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Status latest = getLatestTweet();
+				final Status latest = getLatestTweet(c);
 				if (latest == null) {
 					drawUnableToRetrieveTweet();
 				} else {
 					drawTweet(latest, c);
+					popupPoll(c, latest);
 				}
 			}
 
@@ -178,25 +204,90 @@ public class MainActivity extends Activity {
 	 * 
 	 * @return
 	 */
-	private Status getLatestTweet() {
+	private Status getLatestTweet(Context c) {
 		Twitter twitter = setupTwitterFactory().getInstance();
 		Query q = new Query("from:" + TWITTER_USERNAME + "");
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
 				java.util.List<Status> statuses = result.getTweets();
-				Status latest = null;
 				for (Status status : statuses) {
 					if (status.getInReplyToStatusId() == -1)
 						return status;
 				}
-				return latest;
+			} else {
+				Log.e(TAG, "No statuses found for " + TWITTER_USERNAME);
 			}
 		} catch (TwitterException e) {
 			Log.e(TAG, "getLatestTweet() TwitterException");
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private void popupPoll(Context c, Status status) {
+		// Check that tweet isn't reply or retweet
+		if (status.getInReplyToStatusId() != -1 || status.isRetweet()) {
+			return;
+		}
+
+		// Check urls to see if strawpoll
+		URLEntity[] urls = status.getURLEntities();
+		for (URLEntity url : urls) {
+			String expandedURL = url.getExpandedURL();
+			Log.d(TAG + " popupPoll()", "Latest tweet url: " + expandedURL);
+			if (expandedURL.indexOf("strawpoll.me/") != -1) {
+				Log.d(TAG + " popupPoll()", "URL contains strawpoll.me/");
+				final SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(c);
+				String previousURL = prefs.getString("_pollUrl", null);
+				Log.d(TAG + " popupPoll()", "Old url = " + previousURL);
+				if (!expandedURL.equals(previousURL)) {
+					Log.d(TAG + " popupPoll()", "New pollURL");
+					showPollDialog(c, expandedURL);
+					Editor editor = prefs.edit();
+					editor.putString("_pollUrl", expandedURL);
+					editor.commit();
+				} else {
+					Log.d(TAG + " popupPoll()", "Not a new strawpoll url");
+				}
+			}
+		}
+	}
+
+	@SuppressLint("SetJavaScriptEnabled")
+	private void showPollDialog(final Context context, final String pollUrl) {
+		MainActivity.this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// http://stackoverflow.com/a/6631310/1222411
+				AlertDialog.Builder adb = new AlertDialog.Builder(context);
+				adb.setCancelable(true);
+				adb.setNegativeButton("Dismiss",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+				WebView wv = new WebView(context);
+				wv.loadUrl(pollUrl);
+				wv.getSettings().setJavaScriptEnabled(true);
+				wv.setWebChromeClient(new WebChromeClient());
+				wv.setWebViewClient(new WebViewClient() {
+					public boolean shouldOverrideUrlLoading(WebView view,
+							String url) {
+						view.loadUrl(url);
+						return false;
+					}
+				});
+				Dialog d = adb.setView(wv).create();
+				d.setTitle("Vote now!");
+				d.show();
+			}
+		});
+
 	}
 
 	/**
