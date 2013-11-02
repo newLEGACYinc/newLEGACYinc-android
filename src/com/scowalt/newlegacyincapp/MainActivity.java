@@ -231,13 +231,15 @@ public class MainActivity extends Activity {
 			return;
 		}
 
-		// Check urls to see if strawpoll
 		URLEntity[] urls = status.getURLEntities();
 		for (URLEntity url : urls) {
 			String expandedURL = url.getExpandedURL();
 			Log.d(TAG + " popupPoll()", "Latest tweet url: " + expandedURL);
-			if (expandedURL.indexOf("strawpoll.me/") != -1) {
-				Log.d(TAG + " popupPoll()", "URL contains strawpoll.me/");
+			String strawpoll = "strawpoll.me/";
+			int index = expandedURL.indexOf(strawpoll);
+			if (index != -1
+					&& (index + strawpoll.length() != expandedURL.length())) {
+				Log.d(TAG + " popupPoll()", "URL contains " + strawpoll);
 				final SharedPreferences prefs = PreferenceManager
 						.getDefaultSharedPreferences(c);
 				String previousURL = prefs.getString("_pollUrl", null);
