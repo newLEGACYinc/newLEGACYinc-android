@@ -1,5 +1,7 @@
 package com.scowalt.newlegacyincapp;
 
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +37,14 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				JSONObject stream = MainActivity.twitchStatus();
+				JSONObject stream;
+				try {
+					stream = MainActivity.twitchStatus();
+				} catch (IOException e1) {
+					Log.e(TAG, "Can't get twitch.tv status, won't do anything");
+					e1.printStackTrace();
+					return;
+				}
 				boolean currentlyOnline = stream != null;
 				Log.d(TAG, "currentlyOnline = " + currentlyOnline);
 				if (currentlyOnline && !previouslyOnline) {
@@ -43,7 +52,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 						serveNotificaiton(context, stream.get("game")
 								.toString());
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
+						Log.e(TAG, "JSONException");
 						e.printStackTrace();
 					}
 				} else if (!currentlyOnline && previouslyOnline) {

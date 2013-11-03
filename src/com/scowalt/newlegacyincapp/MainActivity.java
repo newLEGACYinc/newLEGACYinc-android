@@ -348,7 +348,15 @@ public class MainActivity extends Activity {
 	private void updateTwitchStatus() {
 		new Thread(new Runnable() {
 			public void run() {
-				final JSONObject stream = twitchStatus();
+				JSONObject s;
+				try {
+					s = twitchStatus();
+				} catch (IOException e) {
+					Log.e(TAG, "updateTwitchStatus IOException");
+					s = null;
+					e.printStackTrace();
+				}
+				final JSONObject stream = s;
 				MainActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -388,8 +396,9 @@ public class MainActivity extends Activity {
 	/**
 	 * @return JSONObject containing information about the stream that's online,
 	 *         or null for an offline stream
+	 * @throws IOException
 	 */
-	public static JSONObject twitchStatus() {
+	public static JSONObject twitchStatus() throws IOException {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet("https://api.twitch.tv/kraken/streams/"
@@ -410,9 +419,6 @@ public class MainActivity extends Activity {
 			}
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "twitchStatus() ClientProtocolException");
-			e.printStackTrace();
-		} catch (IOException e) {
-			Log.e(TAG, "twitchStatus() IOException");
 			e.printStackTrace();
 		} catch (JSONException e) {
 			Log.e(TAG, "twitchStatus() JSONException");
