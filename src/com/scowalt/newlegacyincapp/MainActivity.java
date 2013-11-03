@@ -2,6 +2,7 @@ package com.scowalt.newlegacyincapp;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -60,10 +61,10 @@ public class MainActivity extends Activity {
 
 	private static final String TAG = "Main";
 	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	protected static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
 	private static final long YOUTUBE_ALARM_INTERVAL_MINUTES = 60;
 	static final String YOUTUBE_USERNAME = "newLEGACYinc";
+	protected static final String TWITCH_USERNAME = "newLEGACYinc";
 	private static final String TWITTER_USERNAME = "newLEGACYinc";
 	private static final String TUMBLR_USERNAME = "newLEGACYinc";
 	private static final String FACEBOOK_USERNAME = "newLEGACYinc";
@@ -226,6 +227,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void popupPoll(Context c, Status status) {
+		String TAG = "Main popupPoll()";
+
 		// Check that tweet isn't reply or retweet
 		if (status.getInReplyToStatusId() != -1 || status.isRetweet()) {
 			return;
@@ -234,24 +237,25 @@ public class MainActivity extends Activity {
 		URLEntity[] urls = status.getURLEntities();
 		for (URLEntity url : urls) {
 			String expandedURL = url.getExpandedURL();
-			Log.d(TAG + " popupPoll()", "Latest tweet url: " + expandedURL);
 			String strawpoll = "strawpoll.me/";
 			int index = expandedURL.indexOf(strawpoll);
 			if (index != -1
 					&& (index + strawpoll.length() != expandedURL.length())) {
-				Log.d(TAG + " popupPoll()", "URL contains " + strawpoll);
 				final SharedPreferences prefs = PreferenceManager
 						.getDefaultSharedPreferences(c);
 				String previousURL = prefs.getString("_pollUrl", null);
-				Log.d(TAG + " popupPoll()", "Old url = " + previousURL);
-				if (!expandedURL.equals(previousURL)) {
-					Log.d(TAG + " popupPoll()", "New pollURL");
+				Date previousDate = new Date(prefs.getLong("_pollTime", 0));
+				Date statusDate = status.getCreatedAt();
+				Log.d(TAG,
+						"previousDate < currentDate? "
+								+ previousDate.before(statusDate));
+				if (!expandedURL.equals(previousURL)
+						&& previousDate.before(statusDate)) {
 					showPollDialog(c, expandedURL);
 					Editor editor = prefs.edit();
 					editor.putString("_pollUrl", expandedURL);
+					editor.putLong("_pollTime", statusDate.getTime());
 					editor.commit();
-				} else {
-					Log.d(TAG + " popupPoll()", "Not a new strawpoll url");
 				}
 			}
 		}
