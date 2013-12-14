@@ -301,7 +301,7 @@ public class MainActivity extends Activity {
 	 * 
 	 * @param context
 	 */
-	private void registerTwitchAlarm(Context context) {
+	static void registerTwitchAlarm(Context context) {
 		Intent i = new Intent(context, TwitchBroadcastReceiver.class);
 
 		PendingIntent sender = PendingIntent.getBroadcast(context,
@@ -318,7 +318,7 @@ public class MainActivity extends Activity {
 				interval, sender);
 	}
 
-	private void registerYouTubeAlarm(Context context) {
+	static void registerYouTubeAlarm(Context context) {
 		Log.d(TAG, "Registering YouTube alarm...");
 		Intent i = new Intent(context, YouTubeBroadcastReceiver.class);
 
