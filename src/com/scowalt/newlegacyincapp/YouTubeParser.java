@@ -36,7 +36,7 @@ import android.util.Log;
  */
 public class YouTubeParser {
 	private final static String TAG = "YouTubeParser";
-	final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+	public final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 	/**
 	 * Returns a list of newLEGACYinc's YouTube videos in the YouTube JSON

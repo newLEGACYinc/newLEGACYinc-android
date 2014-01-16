@@ -13,7 +13,6 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d("BOOT", "Detected boot");
-		Alarms.registerTwitchAlarm(context);
-		Alarms.registerYouTubeAlarm(context);
+		Alarms.register(context);
 	}
 }

@@ -60,7 +60,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private static final String TAG = "Main";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,8 +68,7 @@ public class MainActivity extends Activity {
 
 		setupSocialMediaButtons();
 
-		Alarms.registerTwitchAlarm(this);
-		Alarms.registerYouTubeAlarm(this);
+		Alarms.register(this);
 	}
 
 	protected void onResume() {
@@ -164,8 +163,8 @@ public class MainActivity extends Activity {
 							public void onClick(View v) {
 								this.onClick(v, c);
 								String url = "https://twitter.com/"
-										+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME + "/status/"
-										+ latest.getId();
+										+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME
+										+ "/status/" + latest.getId();
 								Intent i = new Intent(Intent.ACTION_VIEW);
 								i.setData(Uri.parse(url));
 								startActivity(i);
@@ -194,7 +193,8 @@ public class MainActivity extends Activity {
 	 */
 	private Status getLatestTweet(Context c) {
 		Twitter twitter = setupTwitterFactory().getInstance();
-		Query q = new Query("from:" + com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME + "");
+		Query q = new Query("from:"
+				+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME + "");
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
@@ -204,7 +204,9 @@ public class MainActivity extends Activity {
 						return status;
 				}
 			} else {
-				Log.e(TAG, "No statuses found for " + com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME);
+				Log.e(TAG,
+						"No statuses found for "
+								+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME);
 			}
 		} catch (TwitterException e) {
 			Log.e(TAG, "getLatestTweet() TwitterException");
@@ -453,7 +455,7 @@ public class MainActivity extends Activity {
 		});
 	}
 
-	protected static Intent twitchIntent() {
+	public static Intent twitchIntent() {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitch.tv/"
 				+ Constants.Twitch.USERNAME + "/popout/"));
 	}
@@ -492,12 +494,15 @@ public class MainActivity extends Activity {
 				this.onClick(v, c);
 				// http://stackoverflow.com/a/18695465/1222411
 				try {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri
-							.parse("twitter://user?screen_name="
+					startActivity(new Intent(
+							Intent.ACTION_VIEW,
+							Uri.parse("twitter://user?screen_name="
 									+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME)));
 				} catch (Exception e) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri
-							.parse("https://twitter.com/" + com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME)));
+					startActivity(new Intent(
+							Intent.ACTION_VIEW,
+							Uri.parse("https://twitter.com/"
+									+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME)));
 				}
 			}
 		});
@@ -517,7 +522,8 @@ public class MainActivity extends Activity {
 					Uri.parse("fb://profile/100002106849705"));
 		} catch (Exception e) {
 			return new Intent(Intent.ACTION_VIEW,
-					Uri.parse("https://www.facebook.com/" + Constants.Facebook.USERNAME));
+					Uri.parse("https://www.facebook.com/"
+							+ Constants.Facebook.USERNAME));
 		}
 	}
 
@@ -559,7 +565,7 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 
-	static Intent youTubeVideoIntent(Context c, String id) {
+	public static Intent youTubeVideoIntent(Context c, String id) {
 		if (YouTubeIntents.canResolvePlayVideoIntent(c)) {
 			return YouTubeIntents.createPlayVideoIntent(c, id);
 		}

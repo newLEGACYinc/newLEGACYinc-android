@@ -1,10 +1,13 @@
-package com.scowalt.newlegacyincapp;
+package com.scowalt.newlegacyincapp.receivers;
 
 import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.scowalt.newlegacyincapp.Constants;
+import com.scowalt.newlegacyincapp.MainActivity;
+import com.scowalt.newlegacyincapp.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

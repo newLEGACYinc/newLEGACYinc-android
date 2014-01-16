@@ -1,6 +1,7 @@
 package com.scowalt.newlegacyincapp;
 
-import com.scowalt.newlegacyincapp.Constants.YouTube;
+import com.scowalt.newlegacyincapp.receivers.TwitchBroadcastReceiver;
+import com.scowalt.newlegacyincapp.receivers.YouTubeBroadcastReceiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -12,12 +13,17 @@ import android.util.Log;
 public class Alarms {
 	private static final String TAG = "Alarms";
 
+	public static void register(Context c) {
+		registerTwitchAlarm(c);
+		registerYouTubeAlarm(c);
+	}
+	
 	/**
 	 * http://stackoverflow.com/a/16155107/1222411
 	 * 
 	 * @param context
 	 */
-	static void registerTwitchAlarm(Context context) {
+	private static void registerTwitchAlarm(Context context) {
 		Intent i = new Intent(context, TwitchBroadcastReceiver.class);
 
 		PendingIntent sender = PendingIntent.getBroadcast(context,
@@ -34,7 +40,7 @@ public class Alarms {
 				interval, sender);
 	}
 
-	static void registerYouTubeAlarm(Context context) {
+	private static void registerYouTubeAlarm(Context context) {
 		Log.d(TAG, "Registering YouTube alarm...");
 		Intent i = new Intent(context, YouTubeBroadcastReceiver.class);
 

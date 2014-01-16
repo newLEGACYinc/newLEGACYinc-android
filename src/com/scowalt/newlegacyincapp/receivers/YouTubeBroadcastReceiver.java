@@ -1,4 +1,4 @@
-package com.scowalt.newlegacyincapp;
+package com.scowalt.newlegacyincapp.receivers;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -11,8 +11,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.scowalt.newlegacyincapp.MainActivity;
+import com.scowalt.newlegacyincapp.R;
+import com.scowalt.newlegacyincapp.YouTubeParser;
 import com.scowalt.newlegacyincapp.Constants.YouTube;
-
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
