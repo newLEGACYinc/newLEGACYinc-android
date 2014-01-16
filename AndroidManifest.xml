@@ -33,7 +33,7 @@
 
         <receiver android:name="com.scowalt.newlegacyincapp.receivers.TwitchBroadcastReceiver" />
         <receiver android:name="com.scowalt.newlegacyincapp.receivers.YouTubeBroadcastReceiver" />
-        <receiver android:name="com.scowalt.newlegacyincapp.BootReceiver" >
+        <receiver android:name="com.scowalt.newlegacyincapp.receivers.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

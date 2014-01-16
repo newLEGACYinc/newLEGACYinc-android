@@ -114,10 +114,8 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 				notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				context)
-				.setSmallIcon(R.drawable.youtube_notification)
-				.setContentTitle(
-						"New " + YouTube.USERNAME + " video!")
+				context).setSmallIcon(R.drawable.youtube_notification)
+				.setContentTitle("New " + YouTube.USERNAME + " video!")
 				.setContentText(title).setContentIntent(contentIntent)
 				.setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL);
 

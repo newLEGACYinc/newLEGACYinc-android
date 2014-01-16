@@ -1,4 +1,6 @@
-package com.scowalt.newlegacyincapp;
+package com.scowalt.newlegacyincapp.receivers;
+
+import com.scowalt.newlegacyincapp.Alarms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
