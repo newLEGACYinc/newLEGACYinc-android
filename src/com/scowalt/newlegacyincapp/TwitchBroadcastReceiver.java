@@ -97,7 +97,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				context).setSmallIcon(R.drawable.twitch_notification)
-				.setContentTitle(MainActivity.TWITCH_USERNAME + " is online!")
+				.setContentTitle(Constants.Twitch.USERNAME + " is online!")
 				.setContentText("Playing: " + game)
 				.setContentIntent(contentIntent).setAutoCancel(true)
 				.setDefaults(Notification.DEFAULT_ALL);

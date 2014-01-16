@@ -11,6 +11,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.scowalt.newlegacyincapp.Constants.YouTube;
+
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -113,7 +115,7 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 				context)
 				.setSmallIcon(R.drawable.youtube_notification)
 				.setContentTitle(
-						"New " + MainActivity.YOUTUBE_USERNAME + " video!")
+						"New " + YouTube.USERNAME + " video!")
 				.setContentText(title).setContentIntent(contentIntent)
 				.setAutoCancel(true).setDefaults(Notification.DEFAULT_ALL);
 

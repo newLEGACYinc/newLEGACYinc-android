@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -18,6 +19,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.scowalt.newlegacyincapp.Constants.YouTube;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -50,7 +54,7 @@ public class YouTubeParser {
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet(
 				"http://gdata.youtube.com/feeds/api/users/"
-						+ MainActivity.YOUTUBE_USERNAME + "/uploads?alt=json");
+						+ YouTube.USERNAME + "/uploads?alt=json");
 		HttpResponse response = null;
 
 		response = httpclient.execute(httpget, localContext);

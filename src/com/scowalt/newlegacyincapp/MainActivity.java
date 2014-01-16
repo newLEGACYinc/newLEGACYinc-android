@@ -26,6 +26,10 @@ import twitter4j.URLEntity;
 import twitter4j.conf.ConfigurationBuilder;
 
 import com.google.android.youtube.player.YouTubeIntents;
+import com.scowalt.newlegacyincapp.Constants.Reddit;
+import com.scowalt.newlegacyincapp.Constants.Steam;
+import com.scowalt.newlegacyincapp.Constants.Tumblr;
+import com.scowalt.newlegacyincapp.Constants.YouTube;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -58,21 +62,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
 	private static final String TAG = "Main";
-	private static final String TWITCH_CLIENT_ID = "kvshv6jgxb43x9p3uz5q4josja9xsub";
-	private static final long TWITCH_ALARM_INTERVAL_MINUTES = 15;
-	private static final long YOUTUBE_ALARM_INTERVAL_MINUTES = 60;
-	static final String YOUTUBE_USERNAME = "newLEGACYinc";
-	protected static final String TWITCH_USERNAME = "newLEGACYinc";
-	private static final String TWITTER_USERNAME = "newLEGACYinc";
-	private static final String TUMBLR_USERNAME = "newLEGACYinc";
-	private static final String FACEBOOK_USERNAME = "newLEGACYinc";
-	private static final String STEAM_GROUP_URL = "http://steamcommunity.com/groups/newLEGACYinc";
-	private static final int TWITCH_REQUEST_CODE = 120;
-	private static final int YOUTUBE_REQUEST_CODE = 121;
-	private static final String REDDIT_URL = "http://i.reddit.com/r/newlegacyinc";
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,7 +73,6 @@ public class MainActivity extends Activity {
 
 		registerTwitchAlarm(this);
 		registerYouTubeAlarm(this);
-
 	}
 
 	protected void onResume() {
@@ -177,7 +167,7 @@ public class MainActivity extends Activity {
 							public void onClick(View v) {
 								this.onClick(v, c);
 								String url = "https://twitter.com/"
-										+ TWITTER_USERNAME + "/status/"
+										+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME + "/status/"
 										+ latest.getId();
 								Intent i = new Intent(Intent.ACTION_VIEW);
 								i.setData(Uri.parse(url));
@@ -207,7 +197,7 @@ public class MainActivity extends Activity {
 	 */
 	private Status getLatestTweet(Context c) {
 		Twitter twitter = setupTwitterFactory().getInstance();
-		Query q = new Query("from:" + TWITTER_USERNAME + "");
+		Query q = new Query("from:" + com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME + "");
 		try {
 			QueryResult result = twitter.search(q);
 			if (result.getTweets().size() != 0) {
@@ -217,7 +207,7 @@ public class MainActivity extends Activity {
 						return status;
 				}
 			} else {
-				Log.e(TAG, "No statuses found for " + TWITTER_USERNAME);
+				Log.e(TAG, "No statuses found for " + com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME);
 			}
 		} catch (TwitterException e) {
 			Log.e(TAG, "getLatestTweet() TwitterException");
@@ -305,12 +295,12 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(context, TwitchBroadcastReceiver.class);
 
 		PendingIntent sender = PendingIntent.getBroadcast(context,
-				TWITCH_REQUEST_CODE, i, 0);
+				Constants.Twitch.REQUEST_CODE, i, 0);
 
 		long firstTime = SystemClock.elapsedRealtime();
 		firstTime += 3 * 1000;// start 3 seconds after first register.
 
-		long interval = TWITCH_ALARM_INTERVAL_MINUTES * 60 * 1000;
+		long interval = Constants.Twitch.ALARM_INTERVAL_MINUTES * 60 * 1000;
 
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(ALARM_SERVICE);
@@ -323,12 +313,12 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(context, YouTubeBroadcastReceiver.class);
 
 		PendingIntent sender = PendingIntent.getBroadcast(context,
-				YOUTUBE_REQUEST_CODE, i, 0);
+				Constants.YouTube.REQUEST_CODE, i, 0);
 
 		long firstTime = SystemClock.elapsedRealtime();
 		firstTime += 3 * 1000;// start 3 seconds after first register.
 
-		long interval = YOUTUBE_ALARM_INTERVAL_MINUTES * 60 * 1000;
+		long interval = Constants.YouTube.ALARM_INTERVAL_MINUTES * 60 * 1000;
 
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(ALARM_SERVICE);
@@ -379,7 +369,7 @@ public class MainActivity extends Activity {
 	private void drawTwitchStatusText(final JSONObject stream) {
 		final TextView tv = (TextView) findViewById(R.id.twitch_status);
 		if (stream == null) {
-			tv.setText(Html.fromHtml("<b>" + TWITCH_USERNAME
+			tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 					+ " is <font color='red'>offline</font>!</b>"));
 
 			return;
@@ -392,7 +382,7 @@ public class MainActivity extends Activity {
 			Log.e(TAG, "drawTwitchStatusText() JSONException");
 			e.printStackTrace();
 		}
-		tv.setText(Html.fromHtml("<b>" + TWITCH_USERNAME
+		tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 				+ " is <font color='green'>online</font>!</b><br/>Playing: "
 				+ game));
 	}
@@ -406,7 +396,8 @@ public class MainActivity extends Activity {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet("https://api.twitch.tv/kraken/streams/"
-				+ TWITCH_USERNAME + "?client_id=" + TWITCH_CLIENT_ID);
+				+ Constants.Twitch.USERNAME + "?client_id="
+				+ Constants.Twitch.CLIENT_ID);
 		HttpResponse response = null;
 		try {
 			response = httpclient.execute(httpget, localContext);
@@ -457,7 +448,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				this.onClick(v, c);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri
-						.parse(REDDIT_URL)));
+						.parse(Reddit.URL)));
 			}
 		});
 	}
@@ -469,7 +460,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				this.onClick(v, c);
 				startActivity(new Intent(Intent.ACTION_VIEW, Uri
-						.parse(STEAM_GROUP_URL)));
+						.parse(Steam.GROUP_URL)));
 			}
 		});
 	}
@@ -482,12 +473,12 @@ public class MainActivity extends Activity {
 				this.onClick(v, c);
 				try {
 					Intent intent = YouTubeIntents.createUserIntent(c,
-							YOUTUBE_USERNAME);
+							YouTube.USERNAME);
 					startActivity(intent);
 				} catch (Exception e) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse("http://www.youtube.com/user/"
-									+ YOUTUBE_USERNAME)));
+									+ YouTube.USERNAME)));
 				}
 			}
 		});
@@ -507,7 +498,7 @@ public class MainActivity extends Activity {
 
 	protected static Intent twitchIntent() {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitch.tv/"
-				+ TWITCH_USERNAME + "/popout/"));
+				+ Constants.Twitch.USERNAME + "/popout/"));
 	}
 
 	private void setupFacebookButton(final Context c) {
@@ -530,7 +521,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				this.onClick(v, c);
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("http://" + TUMBLR_USERNAME + ".tumblr.com/"));
+						.parse("http://" + Tumblr.USERNAME + ".tumblr.com/"));
 				startActivity(browserIntent);
 			}
 		});
@@ -546,10 +537,10 @@ public class MainActivity extends Activity {
 				try {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
 							.parse("twitter://user?screen_name="
-									+ TWITTER_USERNAME)));
+									+ com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME)));
 				} catch (Exception e) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri
-							.parse("https://twitter.com/" + TWITTER_USERNAME)));
+							.parse("https://twitter.com/" + com.scowalt.newlegacyincapp.Constants.Twitter.USERNAME)));
 				}
 			}
 		});
@@ -569,7 +560,7 @@ public class MainActivity extends Activity {
 					Uri.parse("fb://profile/100002106849705"));
 		} catch (Exception e) {
 			return new Intent(Intent.ACTION_VIEW,
-					Uri.parse("https://www.facebook.com/" + FACEBOOK_USERNAME));
+					Uri.parse("https://www.facebook.com/" + Constants.Facebook.USERNAME));
 		}
 	}
 
