@@ -33,14 +33,11 @@ import com.scowalt.newlegacyincapp.Constants.YouTube;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,8 +68,8 @@ public class MainActivity extends Activity {
 
 		setupSocialMediaButtons();
 
-		registerTwitchAlarm(this);
-		registerYouTubeAlarm(this);
+		Alarms.registerTwitchAlarm(this);
+		Alarms.registerYouTubeAlarm(this);
 	}
 
 	protected void onResume() {
@@ -284,46 +281,6 @@ public class MainActivity extends Activity {
 			}
 		});
 
-	}
-
-	/**
-	 * http://stackoverflow.com/a/16155107/1222411
-	 * 
-	 * @param context
-	 */
-	static void registerTwitchAlarm(Context context) {
-		Intent i = new Intent(context, TwitchBroadcastReceiver.class);
-
-		PendingIntent sender = PendingIntent.getBroadcast(context,
-				Constants.Twitch.REQUEST_CODE, i, 0);
-
-		long firstTime = SystemClock.elapsedRealtime();
-		firstTime += 3 * 1000;// start 3 seconds after first register.
-
-		long interval = Constants.Twitch.ALARM_INTERVAL_MINUTES * 60 * 1000;
-
-		AlarmManager am = (AlarmManager) context
-				.getSystemService(ALARM_SERVICE);
-		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
-				interval, sender);
-	}
-
-	static void registerYouTubeAlarm(Context context) {
-		Log.d(TAG, "Registering YouTube alarm...");
-		Intent i = new Intent(context, YouTubeBroadcastReceiver.class);
-
-		PendingIntent sender = PendingIntent.getBroadcast(context,
-				Constants.YouTube.REQUEST_CODE, i, 0);
-
-		long firstTime = SystemClock.elapsedRealtime();
-		firstTime += 3 * 1000;// start 3 seconds after first register.
-
-		long interval = Constants.YouTube.ALARM_INTERVAL_MINUTES * 60 * 1000;
-
-		AlarmManager am = (AlarmManager) context
-				.getSystemService(ALARM_SERVICE);
-		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
-				interval, sender);
 	}
 
 	private TwitterFactory setupTwitterFactory() {
