@@ -1,5 +1,6 @@
 package com.scowalt.newlegacyincapp;
 
+import com.scowalt.newlegacyincapp.receivers.HitboxBroadcastReceiver;
 import com.scowalt.newlegacyincapp.receivers.TwitchBroadcastReceiver;
 import com.scowalt.newlegacyincapp.receivers.YouTubeBroadcastReceiver;
 
@@ -16,8 +17,27 @@ public class Alarms {
 	public static void register(Context c) {
 		registerTwitchAlarm(c);
 		registerYouTubeAlarm(c);
+		registerHitboxAlarm(c);
 	}
 	
+	private static void registerHitboxAlarm(Context context) {
+		Log.d(TAG, "Registering Hitbox alarm...");
+		Intent i = new Intent(context, HitboxBroadcastReceiver.class);
+
+		PendingIntent sender = PendingIntent.getBroadcast(context,
+				Constants.Hitbox.REQUEST_CODE, i, 0);
+
+		long firstTime = SystemClock.elapsedRealtime();
+		firstTime += 3 * 1000;// start 3 seconds after first register.
+
+		long interval = Constants.Hitbox.ALARM_INTERVAL_MINUTES * 60 * 1000;
+
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(android.content.Context.ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+				interval, sender);
+	}
+
 	/**
 	 * http://stackoverflow.com/a/16155107/1222411
 	 * 

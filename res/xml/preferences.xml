@@ -5,8 +5,12 @@
     <PreferenceCategory android:title="Notifications" >
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="hitbox_notification"
+            android:title="hitbox" />
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="twitch_notification"
-            android:title="Twitch.tv" />
+            android:title="Twitch" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="youtube_notification"

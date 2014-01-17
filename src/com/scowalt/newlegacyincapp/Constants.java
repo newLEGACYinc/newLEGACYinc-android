@@ -31,6 +31,11 @@ public final class Constants {
 
 	public final class Hitbox {
 		static final String USERNAME = "newLEGACY";
+		public static final int REQUEST_CODE = 122;
+		public static final int ALARM_INTERVAL_MINUTES = 15;
+		public static final int MID = 257;
+		public static final String requestUrl = "http://api.hitbox.tv/media";
+		public static final String url = "http://hitbox.tv/" + USERNAME;
 	}
 
 	public final class Twitch {
@@ -38,6 +43,7 @@ public final class Constants {
 		static final int ALARM_INTERVAL_MINUTES = 15;
 		public static final String USERNAME = "newLEGACYinc";
 		static final int REQUEST_CODE = 120;
+		public static final int MID = 123;
 	}
 
 	public final class YouTube {

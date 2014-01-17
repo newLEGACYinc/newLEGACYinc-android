@@ -32,6 +32,7 @@
         </activity>
 
         <receiver android:name="com.scowalt.newlegacyincapp.receivers.TwitchBroadcastReceiver" />
+        <receiver android:name="com.scowalt.newlegacyincapp.receivers.HitboxBroadcastReceiver" />
         <receiver android:name="com.scowalt.newlegacyincapp.receivers.YouTubeBroadcastReceiver" />
         <receiver android:name="com.scowalt.newlegacyincapp.receivers.BootReceiver" >
             <intent-filter>

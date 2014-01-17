@@ -6,8 +6,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.scowalt.newlegacyincapp.Constants;
+import com.scowalt.newlegacyincapp.Constants.Twitch;
 import com.scowalt.newlegacyincapp.MainActivity;
 import com.scowalt.newlegacyincapp.R;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,7 +24,6 @@ import android.util.Log;
 
 public class TwitchBroadcastReceiver extends BroadcastReceiver {
 	private static final String TAG = "TwitchBroadcastReceiver";
-	private static final int MID = 123;
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
@@ -78,7 +79,7 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		mNotificationManager.cancel(MID);
+		mNotificationManager.cancel(Twitch.MID);
 	}
 
 	/**
@@ -108,6 +109,6 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 		NotificationManager mNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		mNotificationManager.notify(MID, mBuilder.build());
+		mNotificationManager.notify(Constants.Twitch.MID, mBuilder.build());
 	}
 }

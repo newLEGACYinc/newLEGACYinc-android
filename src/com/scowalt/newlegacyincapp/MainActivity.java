@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -347,6 +348,44 @@ public class MainActivity extends Activity {
 	}
 
 	/**
+	 * 
+	 * @return JSONObject containing hitbox channel data or null for an offline
+	 *         channel
+	 * @throws IOException
+	 */
+	public static JSONObject hitboxStatus() throws IOException {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		HttpGet httpget = new HttpGet(Constants.Hitbox.requestUrl);
+		HttpResponse response = null;
+
+		try {
+			response = httpclient.execute(httpget, localContext);
+
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				String str = EntityUtils.toString(entity);
+				JSONObject json = new JSONObject(str);
+				JSONArray channels = json.getJSONArray("livestream");
+				for (int i = 0; i < channels.length(); i++) {
+					JSONObject channel = (JSONObject) channels.get(i);
+					String channelName = channel.getString("media_user_name");
+					if (channelName.equals(Constants.Hitbox.USERNAME)) {
+						return channel;
+					}
+				}
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
 	 * @return JSONObject containing information about the stream that's online,
 	 *         or null for an offline stream
 	 * @throws IOException
@@ -458,6 +497,11 @@ public class MainActivity extends Activity {
 	public static Intent twitchIntent() {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitch.tv/"
 				+ Constants.Twitch.USERNAME + "/popout/"));
+	}
+
+	public static Intent hitboxIntent() {
+		// TODO Auto-generated method stub
+		return new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.Hitbox.url));
 	}
 
 	private void setupFacebookButton(final Context c) {
