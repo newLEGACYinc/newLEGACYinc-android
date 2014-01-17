@@ -3,8 +3,13 @@ newLegacyInc App
 
 #####Table of contents
 
-  1. [Libraries](#libraries)
-  2. [Art assets](#art assets)
+  1. [Changelog](#changelog) 
+  2. [Libraries](#libraries)
+  3. [Art assets](#art assets)
+
+Changelog
+-----
+  - **0.4.0** - Added hitbox notifications
 
 Libraries
 -----
