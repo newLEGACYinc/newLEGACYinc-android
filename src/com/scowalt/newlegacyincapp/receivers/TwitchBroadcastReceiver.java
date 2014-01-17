@@ -48,6 +48,10 @@ public class TwitchBroadcastReceiver extends BroadcastReceiver {
 					Log.e(TAG, "Can't get twitch.tv status, won't do anything");
 					e1.printStackTrace();
 					return;
+				} catch (JSONException e) {
+					Log.e(TAG, "JSONException");
+					e.printStackTrace();
+					return;
 				}
 				boolean currentlyOnline = stream != null;
 				Log.d(TAG, "currentlyOnline = " + currentlyOnline);

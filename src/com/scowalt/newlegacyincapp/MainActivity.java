@@ -309,6 +309,10 @@ public class MainActivity extends Activity {
 					Log.e(TAG, "updateTwitchStatus IOException");
 					s = null;
 					e.printStackTrace();
+				} catch (JSONException e) {
+					Log.e(TAG, "updateTwitchStatus JSONException");
+					s = null;
+					e.printStackTrace();
 				}
 				final JSONObject stream = s;
 				MainActivity.this.runOnUiThread(new Runnable() {
@@ -352,8 +356,9 @@ public class MainActivity extends Activity {
 	 * @return JSONObject containing hitbox channel data or null for an offline
 	 *         channel
 	 * @throws IOException
+	 * @throws JSONException 
 	 */
-	public static JSONObject hitboxStatus() throws IOException {
+	public static JSONObject hitboxStatus() throws IOException, JSONException {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet(Constants.Hitbox.requestUrl);
@@ -377,9 +382,7 @@ public class MainActivity extends Activity {
 			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			Log.e(TAG, "ClientProtocol Exception error");
 			e.printStackTrace();
 		}
 		return null;
@@ -389,8 +392,9 @@ public class MainActivity extends Activity {
 	 * @return JSONObject containing information about the stream that's online,
 	 *         or null for an offline stream
 	 * @throws IOException
+	 * @throws JSONException 
 	 */
-	public static JSONObject twitchStatus() throws IOException {
+	public static JSONObject twitchStatus() throws IOException, JSONException {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet("https://api.twitch.tv/kraken/streams/"
@@ -412,9 +416,6 @@ public class MainActivity extends Activity {
 			}
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "twitchStatus() ClientProtocolException");
-			e.printStackTrace();
-		} catch (JSONException e) {
-			Log.e(TAG, "twitchStatus() JSONException");
 			e.printStackTrace();
 		}
 		return null;
