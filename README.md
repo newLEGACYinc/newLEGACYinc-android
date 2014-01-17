@@ -9,7 +9,12 @@ newLegacyInc App
 
 Changelog
 -----
-  - **0.4.0** - Added hitbox notifications
+  - **v0.4.0** - Added hitbox notifications
+  - **v0.3.1** - Fixed notifications not working after device reboot
+  - **v0.3.0** - Added Strawpoll voting dialog. Various minor tweaks
+  - **v0.2.2** - Fixed bug that prevented all YouTube notifications
+  - **v0.2.1** - Fixed Twitch.tv repeating notification bug
+  - **v0.2.0** - Initial public release
 
 Libraries
 -----
