@@ -1,6 +1,10 @@
 package com.scowalt.newlegacyincapp;
 
 public final class Constants {
+	public enum Stream {
+		HITBOX, TWITCH
+	}
+	
 	public class Reddit {
 
 		static final String URL = "http://i.reddit.com/r/newlegacyinc";

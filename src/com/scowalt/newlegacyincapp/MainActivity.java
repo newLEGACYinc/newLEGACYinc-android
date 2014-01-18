@@ -29,6 +29,7 @@ import twitter4j.conf.ConfigurationBuilder;
 import com.google.android.youtube.player.YouTubeIntents;
 import com.scowalt.newlegacyincapp.Constants.Reddit;
 import com.scowalt.newlegacyincapp.Constants.Steam;
+import com.scowalt.newlegacyincapp.Constants.Stream;
 import com.scowalt.newlegacyincapp.Constants.Tumblr;
 import com.scowalt.newlegacyincapp.Constants.YouTube;
 
@@ -299,26 +300,31 @@ public class MainActivity extends Activity {
 		return new TwitterFactory(cb.build());
 	}
 
-	private void updateTwitchStatus() {
+	private void updateStreamStatus() {
 		new Thread(new Runnable() {
 			public void run() {
 				JSONObject s;
+				Constants.Stream mSource;
 				try {
 					s = twitchStatus();
-				} catch (IOException e) {
-					Log.e(TAG, "updateTwitchStatus IOException");
+					if (s == null) {
+						s = hitboxStatus();
+						mSource = Stream.HITBOX;
+					} else {
+						mSource = Stream.TWITCH;
+					}
+				} catch (Exception e) {
+					Log.e(TAG, "updateStreamStatus Exception");
 					s = null;
-					e.printStackTrace();
-				} catch (JSONException e) {
-					Log.e(TAG, "updateTwitchStatus JSONException");
-					s = null;
+					mSource = null;
 					e.printStackTrace();
 				}
 				final JSONObject stream = s;
+				final Constants.Stream source = mSource;
 				MainActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						drawTwitchStatusText(stream);
+						drawStreamStatusText(stream, source);
 					}
 				});
 			}
@@ -329,19 +335,23 @@ public class MainActivity extends Activity {
 	 * NOTE: Only run in UI thread
 	 * 
 	 * @param stream
+	 * @param source
 	 */
-	private void drawTwitchStatusText(final JSONObject stream) {
-		final TextView tv = (TextView) findViewById(R.id.twitch_status);
+	private void drawStreamStatusText(final JSONObject stream, Stream source) {
+		final TextView tv = (TextView) findViewById(R.id.stream_status);
+		
 		if (stream == null) {
 			tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 					+ " is <font color='red'>offline</font>!</b>"));
-
 			return;
 		}
 
 		String game = "";
 		try {
-			game = stream.get("game").toString();
+			if (source == Stream.TWITCH)
+				game = stream.get("game").toString();
+			else if (source == Stream.HITBOX)
+				game = stream.getString("category_name");
 		} catch (JSONException e) {
 			Log.e(TAG, "drawTwitchStatusText() JSONException");
 			e.printStackTrace();
@@ -349,6 +359,8 @@ public class MainActivity extends Activity {
 		tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 				+ " is <font color='green'>online</font>!</b><br/>Playing: "
 				+ game));
+		
+		// TODO Update picture if Hitbox
 	}
 
 	/**
@@ -356,7 +368,7 @@ public class MainActivity extends Activity {
 	 * @return JSONObject containing hitbox channel data or null for an offline
 	 *         channel
 	 * @throws IOException
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	public static JSONObject hitboxStatus() throws IOException, JSONException {
 		HttpClient httpclient = new DefaultHttpClient();
@@ -392,7 +404,7 @@ public class MainActivity extends Activity {
 	 * @return JSONObject containing information about the stream that's online,
 	 *         or null for an offline stream
 	 * @throws IOException
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	public static JSONObject twitchStatus() throws IOException, JSONException {
 		HttpClient httpclient = new DefaultHttpClient();
@@ -598,7 +610,7 @@ public class MainActivity extends Activity {
 	private void refreshScreen(Context context) {
 		Log.d(TAG, "Refreshing screen...");
 
-		updateTwitchStatus();
+		updateStreamStatus();
 
 		updateLatestTweet(context);
 
