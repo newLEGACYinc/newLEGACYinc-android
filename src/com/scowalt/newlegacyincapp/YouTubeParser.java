@@ -53,8 +53,8 @@ public class YouTubeParser {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet(
-				"http://gdata.youtube.com/feeds/api/users/"
-						+ YouTube.USERNAME + "/uploads?alt=json");
+				"http://gdata.youtube.com/feeds/api/users/" + YouTube.USERNAME
+						+ "/uploads?alt=json");
 		HttpResponse response = null;
 
 		response = httpclient.execute(httpget, localContext);
