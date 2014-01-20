@@ -1,7 +1,6 @@
 package com.scowalt.newlegacyincapp;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Date;
 
 import org.apache.http.HttpEntity;
@@ -83,6 +82,7 @@ public class MainActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				final TextView description = (TextView) findViewById(R.id.youtube_description);
 				try {
 					JSONObject json = YouTubeParser.getYouTubeList(c);
 					JSONObject latest = YouTubeParser.getLatestVideo(json);
@@ -101,7 +101,6 @@ public class MainActivity extends Activity {
 						private void drawLatestYouTubeVideo(final Context c,
 								final String videoID, final String titleText,
 								final Bitmap thumbnailImage) {
-							TextView description = (TextView) findViewById(R.id.youtube_description);
 							ImageView thumbnail = (ImageView) findViewById(R.id.youtube_preview);
 							OnClickListener l = new AnimatedOnClickListener() {
 								@Override
@@ -118,15 +117,17 @@ public class MainActivity extends Activity {
 							layout.setOnClickListener(l);
 						}
 					});
-				} catch (JSONException e1) {
-					Log.e(TAG, "updateLatestYouTube() JSONException");
-					e1.printStackTrace();
-				} catch (MalformedURLException e1) {
-					Log.e(TAG, "updateLatestYouTube() MalformedURLException");
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					Log.e(TAG, "updateLatestYouTube() IOException");
-					e1.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+					MainActivity.this.runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							description
+									.setText("Unable to retrieve YouTube information");
+						}
+					});
 				}
 			}
 		}).start();
@@ -181,7 +182,7 @@ public class MainActivity extends Activity {
 					@Override
 					public void run() {
 						((TextView) findViewById(R.id.tweet))
-								.setText("Unable to retrieve twitter information");
+								.setText("Unable to retrieve Twitter information");
 					}
 				});
 			}
@@ -339,7 +340,7 @@ public class MainActivity extends Activity {
 	 */
 	private void drawStreamStatusText(final JSONObject stream, Stream source) {
 		final TextView tv = (TextView) findViewById(R.id.stream_status);
-		
+
 		if (stream == null) {
 			tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 					+ " is <font color='red'>offline</font>!</b>"));
@@ -359,7 +360,7 @@ public class MainActivity extends Activity {
 		tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 				+ " is <font color='green'>online</font>!</b><br/>Playing: "
 				+ game));
-		
+
 		// TODO Update picture if Hitbox
 	}
 
