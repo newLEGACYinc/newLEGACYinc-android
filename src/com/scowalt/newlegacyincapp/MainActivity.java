@@ -301,7 +301,7 @@ public class MainActivity extends Activity {
 		return new TwitterFactory(cb.build());
 	}
 
-	private void updateStreamStatus() {
+	private void updateStreamStatus(final Context context) {
 		new Thread(new Runnable() {
 			public void run() {
 				JSONObject s;
@@ -325,7 +325,7 @@ public class MainActivity extends Activity {
 				MainActivity.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						drawStreamStatusText(stream, source);
+						drawStreamStatus(stream, source, context);
 					}
 				});
 			}
@@ -337,10 +337,12 @@ public class MainActivity extends Activity {
 	 * 
 	 * @param stream
 	 * @param source
+	 * @param context
 	 */
-	private void drawStreamStatusText(final JSONObject stream, Stream source) {
+	private void drawStreamStatus(final JSONObject stream, Stream source,
+			Context context) {
 		final TextView tv = (TextView) findViewById(R.id.stream_status);
-
+		final ImageView iv = (ImageView) findViewById(R.id.stream);
 		if (stream == null) {
 			tv.setText(Html.fromHtml("<b>" + Constants.Twitch.USERNAME
 					+ " is <font color='red'>offline</font>!</b>"));
@@ -349,10 +351,15 @@ public class MainActivity extends Activity {
 
 		String game = "";
 		try {
-			if (source == Stream.TWITCH)
+			if (source == Stream.TWITCH) {
+				iv.setImageResource(R.drawable.twitch_logo);
 				game = stream.get("game").toString();
-			else if (source == Stream.HITBOX)
+				setupTwitchClickableLayout(context);
+			} else if (source == Stream.HITBOX) {
+				iv.setImageResource(R.drawable.hitbox_logo);
 				game = stream.getString("category_name");
+				setupHitboxclickableLayout(context);
+			}
 		} catch (JSONException e) {
 			Log.e(TAG, "drawTwitchStatusText() JSONException");
 			e.printStackTrace();
@@ -440,8 +447,6 @@ public class MainActivity extends Activity {
 	private void setupSocialMediaButtons() {
 		setupYoutubeButton(this);
 
-		setupTwitchClickableLayout(this);
-
 		setupFacebookButton(this);
 
 		setupTumblrButton(this);
@@ -497,12 +502,24 @@ public class MainActivity extends Activity {
 	}
 
 	private void setupTwitchClickableLayout(final Context c) {
-		LinearLayout twitch = (LinearLayout) findViewById(R.id.twitch_layout);
-		twitch.setOnClickListener(new AnimatedOnClickListener() {
+		LinearLayout stream = (LinearLayout) findViewById(R.id.stream_layout);
+		stream.setOnClickListener(new AnimatedOnClickListener() {
 			public void onClick(View v) {
 				this.onClick(v, c);
 				Log.d(TAG, "Twitch onClick() called");
 				Intent browserIntent = twitchIntent();
+				startActivity(browserIntent);
+			}
+		});
+	}
+
+	private void setupHitboxclickableLayout(final Context c) {
+		LinearLayout stream = (LinearLayout) findViewById(R.id.stream_layout);
+		stream.setOnClickListener(new AnimatedOnClickListener() {
+			public void onClick(View v) {
+				this.onClick(v, c);
+				Log.d(TAG, "Twitch onClick() called");
+				Intent browserIntent = hitboxIntent();
 				startActivity(browserIntent);
 			}
 		});
@@ -611,7 +628,7 @@ public class MainActivity extends Activity {
 	private void refreshScreen(Context context) {
 		Log.d(TAG, "Refreshing screen...");
 
-		updateStreamStatus();
+		updateStreamStatus(context);
 
 		updateLatestTweet(context);
 

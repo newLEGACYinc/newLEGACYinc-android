@@ -78,7 +78,7 @@ public class HitboxBroadcastReceiver extends BroadcastReceiver {
 		final String game = channel.getString("category_name");
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				context).setSmallIcon(R.drawable.newlegacyinc_small)
+				context).setSmallIcon(R.drawable.hitbox_notification)
 				.setContentTitle("newLEGACYinc is online!")
 				.setContentText("Playing: " + game)
 				.setContentIntent(contentIntent).setAutoCancel(true)

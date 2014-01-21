@@ -102,14 +102,14 @@
         android:src="@drawable/line" />
 
     <LinearLayout
-        android:id="@+id/twitch_layout"
+        android:id="@+id/stream_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:clickable="true" >
 
         <ImageView
-            android:id="@+id/twitch"
+            android:id="@+id/stream"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
