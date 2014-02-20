@@ -34,7 +34,7 @@ public final class Constants {
 	}
 
 	public final class Hitbox {
-		static final String USERNAME = "newLEGACY";
+		static final String USERNAME = "newLEGACYinc";
 		public static final int REQUEST_CODE = 122;
 		public static final int ALARM_INTERVAL_MINUTES = 15;
 		public static final int MID = 257;

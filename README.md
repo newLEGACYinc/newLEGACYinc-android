@@ -9,6 +9,7 @@ newLegacyInc App
 
 Changelog
 -----
+  - **v0.4.2** - Changed hitbox username
   - **v0.4.1** - Added hitbox logo(s) and hitbox status to main screen
   - **v0.4.0** - Added hitbox notifications
   - **v0.3.1** - Fixed notifications not working after device reboot
