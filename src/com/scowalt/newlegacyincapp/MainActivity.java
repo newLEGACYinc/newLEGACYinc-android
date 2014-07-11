@@ -160,7 +160,6 @@ public class MainActivity extends Activity {
 						tweet.setText(Html.fromHtml("<b>@"
 								+ latest.getUser().getScreenName()
 								+ ":</b><br />" + latest.getText()));
-						Log.d(TAG, "Tweet id = " + latest.getId());
 						tweet.setOnClickListener(new AnimatedOnClickListener() {
 							@Override
 							public void onClick(View v) {
@@ -379,31 +378,27 @@ public class MainActivity extends Activity {
 	 * @throws JSONException
 	 */
 	public static JSONObject hitboxStatus() throws IOException, JSONException {
+		Log.d(TAG, "hitboxStatus()");
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpGet httpget = new HttpGet(Constants.Hitbox.requestUrl);
-		HttpResponse response = null;
+		HttpResponse response = httpclient.execute(httpget, localContext);
 
-		try {
-			response = httpclient.execute(httpget, localContext);
-
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				String str = EntityUtils.toString(entity);
-				JSONObject json = new JSONObject(str);
-				JSONArray channels = json.getJSONArray("livestream");
-				for (int i = 0; i < channels.length(); i++) {
-					JSONObject channel = (JSONObject) channels.get(i);
-					String channelName = channel.getString("media_user_name");
-					if (channelName.equals(Constants.Hitbox.USERNAME)) {
-						return channel;
-					}
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+			String str = EntityUtils.toString(entity);
+			JSONObject json = new JSONObject(str);
+			JSONArray channels = json.getJSONArray("livestream");
+			for (int i = 0; i < channels.length(); i++) {
+				JSONObject channel = (JSONObject) channels.get(i);
+				Log.d(TAG, "channel: " + channel.toString());
+				String channelName = channel.getString("media_user_name");
+				if (channelName.equalsIgnoreCase(Constants.Hitbox.USERNAME)) {
+					return channel;
 				}
 			}
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			Log.e(TAG, "ClientProtocol Exception error");
-			e.printStackTrace();
+		} else {
+			Log.e(TAG, "Hitbox API entity is null");
 		}
 		return null;
 	}
