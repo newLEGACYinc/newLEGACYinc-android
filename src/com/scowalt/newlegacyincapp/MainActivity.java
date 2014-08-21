@@ -303,23 +303,23 @@ public class MainActivity extends Activity {
 	private void updateStreamStatus(final Context context) {
 		new Thread(new Runnable() {
 			public void run() {
-				JSONObject s;
+				JSONObject status;
 				Constants.Stream mSource;
 				try {
-					s = twitchStatus();
-					if (s == null) {
-						s = hitboxStatus();
-						mSource = Stream.HITBOX;
-					} else {
+					status = hitboxStatus();
+					if (status == null) {
+						status = twitchStatus();
 						mSource = Stream.TWITCH;
+					} else {
+						mSource = Stream.HITBOX;
 					}
 				} catch (Exception e) {
 					Log.e(TAG, "updateStreamStatus Exception");
-					s = null;
+					status = null;
 					mSource = null;
 					e.printStackTrace();
 				}
-				final JSONObject stream = s;
+				final JSONObject stream = status;
 				final Constants.Stream source = mSource;
 				MainActivity.this.runOnUiThread(new Runnable() {
 					@Override
@@ -386,12 +386,20 @@ public class MainActivity extends Activity {
 
 		HttpEntity entity = response.getEntity();
 		if (entity != null) {
-			String str = EntityUtils.toString(entity);
-			JSONObject json = new JSONObject(str);
+			String str = EntityUtils.toString(entity, "utf-8");
+			str = str.replaceAll("\\P{InBasic_Latin}", "");
+			Log.d(TAG, str);
+			JSONObject json;
+			try {
+				json = new JSONObject(str);
+			} catch (JSONException e) {
+				// this shit randomly happens for no reason
+				// just try again
+				return hitboxStatus();
+			}
 			JSONArray channels = json.getJSONArray("livestream");
 			for (int i = 0; i < channels.length(); i++) {
 				JSONObject channel = (JSONObject) channels.get(i);
-				Log.d(TAG, "channel: " + channel.toString());
 				String channelName = channel.getString("media_user_name");
 				if (channelName.equalsIgnoreCase(Constants.Hitbox.USERNAME)) {
 					return channel;

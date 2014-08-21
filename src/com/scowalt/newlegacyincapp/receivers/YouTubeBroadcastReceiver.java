@@ -45,8 +45,6 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 
 		final String previousVideoID = prefs.getString("_youtube_id", null);
 		final String previousVideoDate = prefs.getString("_youtube_date", null);
-		Log.d(TAG, "Previous video id = " + previousVideoID);
-		Log.d(TAG, "Previous video date = " + previousVideoDate);
 		final DateFormat df = new SimpleDateFormat(YouTubeParser.DATE_FORMAT);
 		try {
 			final Date previousDate;
@@ -62,8 +60,6 @@ public class YouTubeBroadcastReceiver extends BroadcastReceiver {
 						JSONObject latest = YouTubeParser.getLatestVideo(json);
 						String videoID = YouTubeParser.getVideoID(latest);
 						Date date = YouTubeParser.getVideoPublishedDate(latest);
-						Log.d(TAG, "Latest video id = " + videoID);
-						Log.d(TAG, "Latest video date = " + df.format(date));
 						if (!videoID.equals(previousVideoID)
 								&& date.after(previousDate)) {
 							String title = YouTubeParser.getVideoTitle(latest);
