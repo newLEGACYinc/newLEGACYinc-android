@@ -9,7 +9,7 @@ newLegacyInc App
 
 Changelog
 -----
-  - **x0.4.3** - Improved hitbox notifications; changed hitbox to default stream service
+  - **v0.4.3** - Improved hitbox notifications; changed hitbox to default stream service
   - **v0.4.2** - Changed hitbox username
   - **v0.4.1** - Added hitbox logo(s) and hitbox status to main screen
   - **v0.4.0** - Added hitbox notifications
